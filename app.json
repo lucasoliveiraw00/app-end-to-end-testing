@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "app-end-to-end-testing",
+    "slug": "app-end-to-end-testing",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
