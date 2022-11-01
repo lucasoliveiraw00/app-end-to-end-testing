@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 const HomeScreen = () => (
-  <View style={styles.container}>
+  <View style={styles.container} testID="HomeScreen">
     <Text>Home Screen</Text>
     <StatusBar style="auto" />
   </View>

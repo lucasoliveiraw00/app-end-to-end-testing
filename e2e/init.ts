@@ -1,0 +1,23 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+import { cleanup, init } from 'detox';
+
+const adapter = require('detox/runners/jest/adapter');
+
+const config = require('../package.json').detox;
+
+jest.setTimeout(120000);
+// eslint-disable-next-line jest/no-jasmine-globals
+jasmine.getEnv().addReporter(adapter);
+
+beforeAll(async () => {
+  await init(config, { initGlobals: false });
+});
+
+beforeEach(async () => {
+  await adapter.beforeEach();
+});
+
+afterAll(async () => {
+  await adapter.afterAll();
+  await cleanup();
+});
