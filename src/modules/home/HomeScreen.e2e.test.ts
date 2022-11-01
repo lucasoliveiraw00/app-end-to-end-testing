@@ -1,6 +1,6 @@
 import { by, device, expect, element } from 'detox';
 
-describe('Example', () => {
+describe('Module:Home - HomeScreen', () => {
   beforeAll(async () => {
     await device.launchApp();
   });
