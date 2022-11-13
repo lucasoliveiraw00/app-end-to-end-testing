@@ -27,6 +27,10 @@ before_install:
   - mkdir -p ${ANDROID_HOME}/cmdline-tools
   - unzip -q android-commandline-tools-linux.zip -d ${ANDROID_HOME}/cmdline-tools
   - mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
+  - nvm install 16.13.1
+  - node -v
+  - npm install --global yarn
+  - yarn -v
 
 before_script:
   - echo y | ${TOOLS}/bin/sdkmanager "platform-tools" >/dev/null
