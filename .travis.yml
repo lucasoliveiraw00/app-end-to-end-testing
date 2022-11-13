@@ -2,22 +2,17 @@ branches:
   only:
     - test/e2e-ci
 
-language: android
-jdk: oraclejdk11
-dist: trusty
-sudo: required
-android:
-  components:
-    - platform-tools
-    - tools
-    - build-tools-33.0.3
-    - android-26
-    - android-29
-    - sys-img-armeabi-v7a-android-29
-    - extra-android-m2repository
-    - extra-google-m2repository
-    - extra-google-google_play_services
+sudo: true
+
+env:
+  global:
+    # PATH order is incredibly important. e.g. the 'emulator' script exists in more than one place!
+    - ANDROID_HOME=/usr/local/android-sdk
+    - TOOLS=${ANDROID_HOME}/tools
+    - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
+
 before_install:
+  - ANDROID_TOOLS=4333796 # android-28
   - export ANDROID_HOME=~/android-sdk
   - wget -q "https://dl.google.com/android/repository/sdk-tools-linux-$ANDROID_TOOLS.zip" -O android-sdk-tools.zip
   - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
