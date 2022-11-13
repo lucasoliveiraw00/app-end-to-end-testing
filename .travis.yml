@@ -10,9 +10,6 @@ env:
     - EMULATOR_API_LEVEL=31.3.11
     - ANDROID_BUILD_TOOLS_VERSION=30.0.2
 
-node_js:
-  - 16.13.1
-
 before_install:
   - export ANDROID_HOME=~/android-sdk
   - wget -q "https://dl.google.com/android/repository/platform-tools_r33.0.3-linux.zip" -O android-sdk-tools.zip
@@ -30,7 +27,7 @@ before_install:
   # install older build tools (for emulator)
   - sdkmanager "build-tools;33.0.3" "platforms;android-33" > /dev/null
   # Node.js management
-  - nvm install $NODE
+  - nvm install 16.13.1
 
 dist: trusty
 
