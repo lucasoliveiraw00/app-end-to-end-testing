@@ -1,0 +1,27 @@
+workflows:
+  android-workflow:
+    name: Android Workflow
+    instance_type: linux
+    environment:
+      node: latest
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+    scripts:
+      - name: Install yarn dependencies
+        script: |
+          yarn install
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/android/local.properties"
+      - name: Build with Detox
+        script: |
+          npx detox build -c android.emu.codemagic:release -l verbose;
+      - name: Test with Detox
+        script: |
+          npx detox test -c android.emu.codemagic:release -l verbose

@@ -1,0 +1,130 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "standard-with-typescript",
+    "prettier",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:react-hooks/recommended",
+    "plugin:jest/recommended"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.test.ts", "**/*.test.tsx"],
+      "env": {
+        "jest": true,
+        "jest/globals": true
+      }
+    }
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["react", "react-hooks", "prettier", "jest"],
+  "settings": {
+    "import/ignore": ["react-native"],
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-no-bind": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
+    "react/function-component-definition": [
+      "error",
+      { "namedComponents": "arrow-function" }
+    ],
+
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+
+    "no-use-before-define": "off",
+    "no-unused-vars": "error",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-alert": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": ["@modules/*/*", "*/modules/*/*", "**/modules/*/*"],
+        "patterns": ["@modules/*/*", "*/modules/*/*", "**/modules/*/*"]
+      }
+    ],
+
+    "prettier/prettier": [
+      "error",
+      {
+        "semi": true,
+        "singleQuote": true,
+        "bracketSameLine": false,
+        "bracketSpacing": true,
+        "arrowParens": "always",
+        "trailingComma": "all",
+        "endOfLine": "lf",
+        "printWidth": 80
+      }
+    ],
+
+    "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
+    "import/extensions": [
+      "error",
+      "never",
+      { "ignorePackages": true, "pattern": { "svg": "ignorePackages" } }
+    ],
+    "import/order": [
+      "error",
+      {
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "builtin",
+            "position": "before"
+          },
+          {
+            "pattern": "react-native",
+            "group": "builtin",
+            "position": "before"
+          },
+          {
+            "pattern": "@components/**",
+            "group": "external",
+            "position": "after"
+          },
+          {
+            "pattern": "@modules/**",
+            "group": "external",
+            "position": "after"
+          },
+          {
+            "pattern": "@hooks/**",
+            "group": "external",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [
+          "react",
+          "react-native",
+          "@components",
+          "@modules",
+          "@hooks"
+        ],
+        "newlines-between": "always-and-inside-groups"
+      }
+    ]
+  }
+}
