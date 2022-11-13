@@ -2,31 +2,39 @@ branches:
   only:
     - test/e2e-ci
 
-sudo: true
+language: android
 
 env:
   global:
-    # PATH order is incredibly important. e.g. the 'emulator' script exists in more than one place!
+    - JAVA_TOOL_OPTIONS=-Dhttps.protocols=TLSv1.2
+    - BUILD_API=31
+    - BUILD_TOOLS=31.0.0
+    - ABI=x86
+    - EMU_API=22
+    - EMU_FLAVOR=default
     - ANDROID_HOME=/usr/local/android-sdk
-    - TOOLS=${ANDROID_HOME}/tools
+    - TOOLS=${ANDROID_HOME}/cmdline-tools/latest
+    # PATH order is important, the 'emulator' script exists in more than one place
     - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
+    - ROBOLECTRIC_SDK8_URL=https://repo1.maven.org/maven2/org/robolectric/android-all/8.0.0_r4-robolectric-r1/android-all-8.0.0_r4-robolectric-r1
+    - ROBOLECTRIC_SDK8_DIR=$HOME/.m2/repository/org/robolectric/android-all/8.0.0_r4-robolectric-r1
+    - ROBOLECTRIC_SDK8_FILE=${ROBOLECTRIC_SDK8_DIR}/android-all-8.0.0_r4-robolectric-r1
+
+android:
+  components:
+    - tools
 
 before_install:
-  - ANDROID_TOOLS=4333796 # android-28
-  - export ANDROID_HOME=~/android-sdk
-  - wget -q "https://dl.google.com/android/repository/sdk-tools-linux-$ANDROID_TOOLS.zip" -O android-sdk-tools.zip
-  - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
-  - rm android-sdk-tools.zip
-  - PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
-  # Silence warning.
-  - mkdir -p ~/.android
-  - touch ~/.android/repositories.cfg
-  - PATH=$(echo "$PATH" | sed -e 's/:\/usr\/local\/lib\/jvm\/openjdk11\/bin//');
-    JAVA_HOME=/usr/lib/jvm/java-11.0.14-openjdk-amd64;
-  # - export PATH=$PATH:$ANDROID_HOME/emulator
-  # - export PATH=$PATH:$ANDROID_HOME/tools
-  # - export PATH=$PATH:$ANDROID_HOME/tools/bin
-  # - export PATH=$PATH:$ANDROID_HOME/platform-tools
+  - curl -s "https://get.sdkman.io" | bash
+  - source "$HOME/.sdkman/bin/sdkman-init.sh"
+  - sdk install java 11.0.12-open
+  - sdk use java 11.0.12-open
+  # Install cmdline-tools (older tools doesn't support Java 11)
+  - wget -q "https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip" -O android-commandline-tools-linux.zip
+  - mkdir -p ${ANDROID_HOME}/cmdline-tools
+  - unzip -q android-commandline-tools-linux.zip -d ${ANDROID_HOME}/cmdline-tools
+  - mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
+  # Library for image manipulation in snapshot tests
   - nvm install 16.13.1
   - node -v
   - npm install --global yarn
