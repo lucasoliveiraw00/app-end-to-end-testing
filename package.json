@@ -10,8 +10,8 @@
     "format": "prettier . --write",
     "lint:fix": "eslint . --fix",
     "prepare": "husky install",
-    "build:e2e:android": "detox build -c android.emu.debug",
-    "test:e2e:android": "detox test -c android.emu.debug"
+    "build:e2e:android": "npx detox build -c android.emu.debug",
+    "test:e2e:android": "npx detox test -c android.emu.debug"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
