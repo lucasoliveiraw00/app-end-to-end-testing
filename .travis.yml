@@ -1,18 +1,34 @@
-language: node_js
-
-node_js:
-  - 16.13.1
+os:
+- linux
 
 branches:
   only:
     - test/e2e-ci
 
+before_install:
+  - export ANDROID_HOME=/usr/local/android-sdk
+  - export PATH=$PATH:$ANDROID_HOME/emulator
+  - export PATH=$PATH:$ANDROID_HOME/tools
+  - export PATH=$PATH:$ANDROID_HOME/tools/bin
+  - export PATH=$PATH:$ANDROID_HOME/platform-tools
 install:
-  - wget http://dl.google.com/android/android-sdk_r18-linux.tgz
-  - tar -zxf android-sdk_r18-linux.tgz
-  - export ANDROID_HOME=~/builds/lucasoliveiraw00/app-end-to-end-testing/android-sdk-linux
-  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-  - android update sdk --filter 1,2,9 --no-ui --force
+  - yarn install
+
+language: android
+jdk:
+  - oraclejdk11
+dist: trusty
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-30
+  - android-30
+  - extra-google-google_play_services
+  - extra-google-m2repository
+  - extra-android-m2repository
+
+install:
   - yarn install
 
 script:
