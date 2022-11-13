@@ -10,9 +10,11 @@ workflows:
         - pull_request
       branch_patterns:
         - pattern: '*'
-          include: true
+          include: false
+          source: false
         - pattern: main
           include: true
+          source: true
     scripts:
       - name: Install yarn dependencies
         script: |
