@@ -12,6 +12,9 @@ workflows:
         - pattern: main
           include: true
           source: true
+        - pattern: '*'
+          include: true
+          source: true
     scripts:
       - name: Install yarn dependencies
         script: |
