@@ -27,6 +27,9 @@ before_install:
   # - sdkmanager "build-tools;33.0.3" "platforms;android-33" > /dev/null
   # Node.js management
   - nvm install 16.13.1
+  - node -v
+  - npm install yarn
+  - yarn -v
 
 # dist: trusty
 
