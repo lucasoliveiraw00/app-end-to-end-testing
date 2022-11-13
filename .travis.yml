@@ -3,43 +3,48 @@ branches:
     - test/e2e-ci
 
 language: android
+jdk: oraclejdk11
 
 env:
   global:
-    - JAVA_TOOL_OPTIONS=-Dhttps.protocols=TLSv1.2
     - BUILD_API=31
     - BUILD_TOOLS=31.0.0
-    - ABI=x86
-    - EMU_API=22
-    - EMU_FLAVOR=default
     - ANDROID_HOME=/usr/local/android-sdk
     - TOOLS=${ANDROID_HOME}/cmdline-tools/latest
-    # PATH order is important, the 'emulator' script exists in more than one place
-    - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
-    - ROBOLECTRIC_SDK8_URL=https://repo1.maven.org/maven2/org/robolectric/android-all/8.0.0_r4-robolectric-r1/android-all-8.0.0_r4-robolectric-r1
-    - ROBOLECTRIC_SDK8_DIR=$HOME/.m2/repository/org/robolectric/android-all/8.0.0_r4-robolectric-r1
-    - ROBOLECTRIC_SDK8_FILE=${ROBOLECTRIC_SDK8_DIR}/android-all-8.0.0_r4-robolectric-r1
 
 android:
   components:
     - tools
 
+licenses:
+  - 'android-sdk-preview-license-.+'
+  - 'android-sdk-license-.+'
+  - 'google-gdk-license-.+'
+
 before_install:
-  - curl -s "https://get.sdkman.io" | bash
-  - source "$HOME/.sdkman/bin/sdkman-init.sh"
-  - sdk install java 11.0.12-open
-  - sdk use java 11.0.12-open
   # Install cmdline-tools (older tools doesn't support Java 11)
   - wget -q "https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip" -O android-commandline-tools-linux.zip
   - mkdir -p ${ANDROID_HOME}/cmdline-tools
   - unzip -q android-commandline-tools-linux.zip -d ${ANDROID_HOME}/cmdline-tools
   - mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
-  # Library for image manipulation in snapshot tests
-  - nvm install 16.13.1
-  - node -v
-  - npm install --global yarn
-  - yarn -v
-  - yarn
+
+before_script:
+  - echo y | ${TOOLS}/bin/sdkmanager "platform-tools" >/dev/null
+  - echo y | ${TOOLS}/bin/sdkmanager "tools" >/dev/null
+  - echo y | ${TOOLS}/bin/sdkmanager "build-tools;$BUILD_TOOLS" >/dev/null
+  - echo y | ${TOOLS}/bin/sdkmanager "platforms;android-$BUILD_API" >/dev/null
+  - echo y | ${TOOLS}/bin/sdkmanager "extras;android;m2repository" >/dev/null
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cach
+
 script:
   - yarn android
   # - yarn ci:e2e
