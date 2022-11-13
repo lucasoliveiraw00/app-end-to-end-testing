@@ -17,7 +17,7 @@ before_install:
   - echo yes | sdkmanager "build-tools;27.0.1"
   - echo yes | sdkmanager tools
   - echo yes | sdkmanager "system-images;android-24;default;armeabi-v7a"
-  - echo no | avdmanager create avd --force -n Pixel_3_API_27 -k "system-images;android-24;default;armeabi-v7a"
+  - echo no | avdmanager create avd --force -n Pixel_3a_XL_API_29 -k "system-images;android-24;default;armeabi-v7a"
 install:
   - export PATH=$HOME/.nvm/versions/node/v12.13.0/bin:$PATH
   - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
