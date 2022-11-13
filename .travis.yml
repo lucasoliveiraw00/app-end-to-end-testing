@@ -3,26 +3,38 @@ branches:
     - test/e2e-ci
 
 language: android
-jdk: oraclejdk11
 dist: trusty
-sudo: required
 android:
   components:
+    - tools
     - platform-tools
     - tools
-    - build-tools-33.0.3
-    - android-26
-    - android-29
-    - sys-img-armeabi-v7a-android-29
-    - extra-android-m2repository
-    - extra-google-m2repository
     - extra-google-google_play_services
+    - extra-android-m2repository
+  licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+
+before_install:
+  - touch $HOME/.android/repositories.cfg
+  # Android API Level 30
+  - yes | sdkmanager "platforms;android-30"
+  - yes | sdkmanager "build-tools;30.0.2"
+  # Android API Level 31
+  - yes | sdkmanager "platforms;android-31"
+  - yes | sdkmanager "build-tools;31.0.0"
+  # Android API Level 32
+  - yes | sdkmanager "platforms;android-32"
+  - yes | sdkmanager "build-tools;32.0.0"
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.android/build-cache
+
 script:
-  - export ANDROID_HOME=~/android-sdk
-  - echo no | android create avd --force -n test -t android-29 --abi armeabi-v7a
-  - nvm install 16.13.1
-  - node -v
-  - npm install --global yarn
-  - yarn -v
-  - yarn
-  - yarn android
+  - sdkmanager --list
