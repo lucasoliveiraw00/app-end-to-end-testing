@@ -5,15 +5,18 @@ branches:
   only:
     - test/e2e-ci
 
+sudo: required
 # env:
 #   global:
 #     - EMULATOR_API_LEVEL=31.3.11
 #     - ANDROID_BUILD_TOOLS_VERSION=30.0.2
 
 before_install:
+  # Nodejs
   - curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
   - sudo apt-get install -y nodejs
   - node --version
+  #
   # Repo for Yarn
   # - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
   # - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
