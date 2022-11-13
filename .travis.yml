@@ -20,6 +20,7 @@ before_install:
   - export PATH=$PATH:$ANDROID_HOME/tools
   - export PATH=$PATH:$ANDROID_HOME/tools/bin
   - export PATH=$PATH:$ANDROID_HOME/platform-tools
+  - yarn install
 
 language: android
 jdk:
@@ -36,9 +37,6 @@ android:
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
-
-install:
-  - yarn install
 
 script:
   - yarn ci:e2e
