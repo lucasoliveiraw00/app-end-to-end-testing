@@ -43,4 +43,4 @@ cache:
 script:
   - sdkmanager --list
   - yarn
-  - yarn android
+  - npx react-native run-android --variant=release
