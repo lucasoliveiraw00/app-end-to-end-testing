@@ -49,7 +49,7 @@ module.exports = {
     },
     'android.emu.codemagic:release': {
       device: 'emulator.codemagic',
-      app: 'android.codemagic',
+      app: 'android.release',
     },
   },
 };
