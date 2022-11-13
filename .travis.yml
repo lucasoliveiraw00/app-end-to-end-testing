@@ -42,5 +42,6 @@ cache:
 
 script:
   - sdkmanager --list
+  - export ANDROID_HOME=~/android-sdk
   - yarn
   - npx react-native run-android --variant=release
