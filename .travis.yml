@@ -9,5 +9,48 @@ before_install:
   - yarn -v
   - yarn install
 
+language: android
+jdk: oraclejdk11
+sudo: required
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-26.0.3
+    - android-21
+    - android-26
+    - sys-img-armeabi-v7a-android-21
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - extra-google-google_play_services
+
 script:
   - yarn ci:e2e
+
+matrix:
+  include:
+    - language: node_js
+      node_js:
+        - 16.13.1
+      script:
+        - node -v
+        - yarn -v
+        - yarn install
+
+    - os: linux
+      language: android
+      jdk: oraclejdk11
+      sudo: required
+      android:
+        components:
+          - platform-tools
+          - tools
+          - build-tools-26.0.3
+          - android-21
+          - android-26
+          - sys-img-armeabi-v7a-android-21
+          - extra-android-m2repository
+          - extra-google-m2repository
+          - extra-google-google_play_services
+      script:
+        - yarn ci:e2e
