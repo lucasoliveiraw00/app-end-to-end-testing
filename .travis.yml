@@ -4,14 +4,6 @@ branches:
 
 matrix:
   include:
-    # - language: node_js
-    #   node_js:
-    #     - 16.13.1
-    #   script:
-    #     - node -v
-    #     - yarn -v
-    #     - yarn install
-
     # - os: osx
     #   language: objective-c
     #   osx_image: xcodeX.X
@@ -20,22 +12,22 @@ matrix:
     - os: linux
       language: android
       jdk: oraclejdk11
+      dist: trusty
       sudo: required
       android:
         components:
           - platform-tools
           - tools
-          - build-tools-26.0.3
-          - android-21
+          - build-tools-29.0.3
           - android-26
-          - sys-img-armeabi-v7a-android-21
+          - android-29
+          - sys-img-armeabi-v7a-android-29
           - extra-android-m2repository
           - extra-google-m2repository
           - extra-google-google_play_services
       script:
-        - nvm install 16.13.1
-        - node -v
-        - npm install --global yarn
-        - yarn -v
-        - yarn install
+        - echo no | android create avd --force -n Pixel_3a_XL_API_29 -t android-29 --abi default/x86
+        - curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+        - sudo apt-get install -y nodejs
+        - yarn
         - yarn ci:e2e
