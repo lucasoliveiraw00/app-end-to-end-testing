@@ -9,7 +9,7 @@ workflows:
         - push
         - pull_request
       branch_patterns:
-        - pattern: main
+        - pattern: test/e2e-ci
           include: true
           source: true
     scripts:
