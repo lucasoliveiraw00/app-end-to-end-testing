@@ -4,13 +4,18 @@ branches:
 
 matrix:
   include:
-    - language: node_js
-      node_js:
-        - 16.13.1
-      script:
-        - node -v
-        - yarn -v
-        - yarn install
+    # - language: node_js
+    #   node_js:
+    #     - 16.13.1
+    #   script:
+    #     - node -v
+    #     - yarn -v
+    #     - yarn install
+
+    # - os: osx
+    #   language: objective-c
+    #   osx_image: xcodeX.X
+    #   script:
 
     - os: linux
       language: android
@@ -28,4 +33,9 @@ matrix:
           - extra-google-m2repository
           - extra-google-google_play_services
       script:
+        - nvm install 16.13.1
+        - node -v
+        - npm install --global yarn
+        - yarn -v
+        - yarn install
         - yarn ci:e2e
