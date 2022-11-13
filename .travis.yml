@@ -2,31 +2,6 @@ branches:
   only:
     - test/e2e-ci
 
-before_install:
-  - nvm install 16.13.1
-  - node -v
-  - npm install --global yarn
-  - yarn -v
-  - yarn install
-
-language: android
-jdk: oraclejdk11
-sudo: required
-android:
-  components:
-    - platform-tools
-    - tools
-    - build-tools-26.0.3
-    - android-21
-    - android-26
-    - sys-img-armeabi-v7a-android-21
-    - extra-android-m2repository
-    - extra-google-m2repository
-    - extra-google-google_play_services
-
-script:
-  - yarn ci:e2e
-
 matrix:
   include:
     - language: node_js
