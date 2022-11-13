@@ -9,6 +9,8 @@ workflows:
         - push
         - pull_request
       branch_patterns:
+        - pattern: '*'
+          include: true
         - pattern: main
           include: true
     scripts:
