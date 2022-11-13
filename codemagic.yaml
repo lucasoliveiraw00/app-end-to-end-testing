@@ -11,10 +11,8 @@ workflows:
       branch_patterns:
         - pattern: '*'
           include: false
-          source: false
         - pattern: main
           include: true
-          source: true
     scripts:
       - name: Install yarn dependencies
         script: |
