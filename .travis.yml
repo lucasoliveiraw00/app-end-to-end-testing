@@ -1,5 +1,5 @@
 os:
-- linux
+  - linux
 
 branches:
   only:
@@ -18,8 +18,6 @@ before_install:
   - export PATH=$PATH:$ANDROID_HOME/tools
   - export PATH=$PATH:$ANDROID_HOME/tools/bin
   - export PATH=$PATH:$ANDROID_HOME/platform-tools
-install:
-  - yarn install
 
 language: android
 jdk:
@@ -29,13 +27,13 @@ dist: trusty
 
 android:
   components:
-  - tools
-  - platform-tools
-  - build-tools-$ANDROID_BUILD_TOOLS_VERSION
-  - android-$EMULATOR_API_LEVEL
-  - extra-google-google_play_services
-  - extra-google-m2repository
-  - extra-android-m2repository
+    - tools
+    - platform-tools
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+    - android-$EMULATOR_API_LEVEL
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
 
 install:
   - yarn install
