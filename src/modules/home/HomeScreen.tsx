@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 
 const HomeScreen = () => (
   <View style={styles.container} testID="HomeScreen">
-    <Text>Home Screens</Text>
+    <Text>Home Screen</Text>
     <StatusBar style="auto" />
   </View>
 );
