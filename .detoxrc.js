@@ -25,21 +25,31 @@ module.exports = {
     },
   },
   devices: {
-    emulator: {
+    'emulator.local': {
       type: 'android.emulator',
       device: {
         avdName: 'Pixel_3a_XL_API_29',
       },
     },
+    'emulator.codemagic': {
+      type: 'android.emulator',
+      device: {
+        avdName: 'emulator',
+      },
+    },
   },
   configurations: {
     'android.emu.debug': {
-      device: 'emulator',
+      device: 'emulator.local',
       app: 'android.debug',
     },
     'android.emu.release': {
-      device: 'emulator',
+      device: 'emulator.local',
       app: 'android.release',
+    },
+    'android.emu.codemagic:release': {
+      device: 'emulator.codemagic',
+      app: 'android.codemagic',
     },
   },
 };
