@@ -15,7 +15,7 @@ node_js:
 
 before_install:
   - export ANDROID_HOME=~/android-sdk
-  - wget -q "https://dl.google.com/android/repository/sdk-tools-linux-r30.0.0.zip" -O android-sdk-tools.zip
+  - wget -q "https://dl.google.com/android/repository/platform-tools_r33.0.3-linux.zip" -O android-sdk-tools.zip
   - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
   - rm android-sdk-tools.zip
   - PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
@@ -30,7 +30,7 @@ before_install:
   # Platform tools
   - sdkmanager "tools" "platform-tools" > /dev/null
   # install older build tools (for emulator)
-  - sdkmanager "build-tools;30.0.0" "platforms;android-30" > /dev/null
+  - sdkmanager "build-tools;33.0.3" "platforms;android-33" > /dev/null
   # Node.js management
   - nvm install $NODE
 
