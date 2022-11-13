@@ -17,8 +17,25 @@ android:
     - extra-android-m2repository
     - extra-google-m2repository
     - extra-google-google_play_services
-script:
+before_install:
   - export ANDROID_HOME=~/android-sdk
+  - wget -q "https://dl.google.com/android/repository/sdk-tools-linux-$ANDROID_TOOLS.zip" -O android-sdk-tools.zip
+  - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
+  - rm android-sdk-tools.zip
+  - PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+  # Silence warning.
+  - mkdir -p ~/.android
+  - touch ~/.android/repositories.cfg
+  - PATH=$(echo "$PATH" | sed -e 's/:\/usr\/local\/lib\/jvm\/openjdk11\/bin//');
+    JAVA_HOME=/usr/lib/jvm/java-11.0.14-openjdk-amd64;
+  # Accept licenses before installing components, no need to echo y for each component
+  - yes | sdkmanager --licenses
+  # Platform tools
+  - sdkmanager "tools" "platform-tools" > /dev/null
+  # install older build tools (for emulator)
+  - sdkmanager "build-tools;26.0.2" "platforms;android-26" > /dev/null
+  # install modern build tools (for compilation)
+  - sdkmanager "build-tools;28.0.3" "platforms;android-28" > /dev/null
   # - export PATH=$PATH:$ANDROID_HOME/emulator
   # - export PATH=$PATH:$ANDROID_HOME/tools
   # - export PATH=$PATH:$ANDROID_HOME/tools/bin
@@ -28,7 +45,9 @@ script:
   - npm install --global yarn
   - yarn -v
   - yarn
-  - yarn ci:e2e
+script:
+  - yarn android
+  # - yarn ci:e2e
 # matrix:
 #   include:
 #     # - os: osx
