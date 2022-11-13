@@ -16,22 +16,28 @@ module.exports = {
       build:
         'cd android; ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug; cd -',
       reversePorts: [8081],
+      device: {
+        avdName: 'emulator',
+      },
     },
     'android.release': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
       build:
         'cd android; ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release; cd -',
-    },
-  },
-  devices: {
-    emulator: {
-      type: 'android.emulator',
       device: {
-        avdName: 'Pixel_3a_XL_API_29',
+        avdName: 'emulator',
       },
     },
   },
+  // devices: {
+  //   emulator: {
+  //     type: 'android.emulator',
+  //     device: {
+  //       avdName: 'Pixel_3a_XL_API_29',
+  //     },
+  //   },
+  // },
   configurations: {
     'android.emu.debug': {
       device: 'emulator',

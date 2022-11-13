@@ -1,0 +1,38 @@
+workflows:
+  android-workflow:
+    name: Android Workflow
+    instance_type: linux
+    environment:
+      node: latest
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: test/e2e-ci
+          include: true
+          source: true
+    scripts:
+      - name: Install yarn dependencies
+        script: |
+          yarn install
+      - name: Install detox dependencies
+        script: |
+          brew tap wix/brew
+      - name: Install detox-cli
+        script: |
+          npm install -g detox-cli
+      - name: Set Android SDK location
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/android/local.properties"
+      - name: Build with Detox
+        script: |
+          #!/bin/sh
+          set -e
+          set -x
+          detox build -c android.emu.release -l verbose
+      - name: Test with Detox
+        script: |
+          #!/bin/sh
+          set -e
+          set -x
+          detox test -c android.emu.release -l verbose
