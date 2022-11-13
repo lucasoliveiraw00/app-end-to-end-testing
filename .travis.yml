@@ -5,7 +5,14 @@ branches:
   only:
     - test/e2e-ci
 
+env:
+  global:
+    - EMULATOR_API_LEVEL=31.3.11
+    - ANDROID_BUILD_TOOLS_VERSION=30.0.2
+
 before_install:
+  - curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
+  - sudo apt-get install -y nodejs
   - export ANDROID_HOME=/usr/local/android-sdk
   - export PATH=$PATH:$ANDROID_HOME/emulator
   - export PATH=$PATH:$ANDROID_HOME/tools
@@ -17,13 +24,15 @@ install:
 language: android
 jdk:
   - oraclejdk11
+
 dist: trusty
+
 android:
   components:
   - tools
   - platform-tools
-  - build-tools-30
-  - android-30
+  - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+  - android-$EMULATOR_API_LEVEL
   - extra-google-google_play_services
   - extra-google-m2repository
   - extra-android-m2repository
