@@ -20,8 +20,7 @@ before_install:
   - mkdir -p ~/.android
   - touch ~/.android/repositories.cfg
   # install correct version of java on osx
-  - PATH=$(echo "$PATH" | sed -e 's/:\/usr\/local\/lib\/jvm\/openjdk11\/bin//');
-    JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64;
+  - PATH=$(echo "$PATH" | sed -e 's/:\/usr\/local\/lib\/jvm\/openjdk11\/bin//'); JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64;
   # Platform tools
   - sdkmanager "tools" "platform-tools" > /dev/null
   # install older build tools (for emulator)
