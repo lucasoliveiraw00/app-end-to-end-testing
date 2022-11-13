@@ -8,6 +8,11 @@ branches:
     - test/e2e-ci
 
 install:
+  - wget http://dl.google.com/android/android-sdk_r18-linux.tgz
+  - tar -zxf android-sdk_r18-linux.tgz
+  - export ANDROID_HOME=~/builds/lucasoliveiraw00/app-end-to-end-testing/android-sdk-linux
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  - android update sdk --filter 1,2,9 --no-ui --force
   - yarn install
 
 script:
