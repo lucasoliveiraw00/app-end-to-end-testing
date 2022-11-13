@@ -1,86 +1,44 @@
-branches:
-  only:
-    - test/e2e-ci
-
 language: android
-jdk: oraclejdk11
-
+dist: trusty
+jdk: openjdk11
 env:
   global:
-    - BUILD_API=31
-    - BUILD_TOOLS=31.0.0
-    - ANDROID_HOME=/usr/local/android-sdk
-    - TOOLS=${ANDROID_HOME}/cmdline-tools/latest
-
+    - NODE_VERSION=stable
 android:
   components:
-    - tools
+    # Uncomment the lines below if you want to
+    # use the latest revision of Android SDK Tools
+    #          - tools
+    #          - platform-tools
 
-licenses:
-  - 'android-sdk-preview-license-.+'
-  - 'android-sdk-license-.+'
-  - 'google-gdk-license-.+'
-
+    # The SDK version used to compile your project
+    - android-24
 before_install:
-  # Install cmdline-tools (older tools doesn't support Java 11)
-  - wget -q "https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip" -O android-commandline-tools-linux.zip
-  - mkdir -p ${ANDROID_HOME}/cmdline-tools
-  - unzip -q android-commandline-tools-linux.zip -d ${ANDROID_HOME}/cmdline-tools
-  - mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
-  - nvm install 16.13.1
-  - node -v
-  - npm install --global yarn
-  - yarn -v
-
-before_script:
-  - echo y | ${TOOLS}/bin/sdkmanager "platform-tools" >/dev/null
-  - echo y | ${TOOLS}/bin/sdkmanager "tools" >/dev/null
-  - echo y | ${TOOLS}/bin/sdkmanager "build-tools;$BUILD_TOOLS" >/dev/null
-  - echo y | ${TOOLS}/bin/sdkmanager "platforms;android-$BUILD_API" >/dev/null
-  - echo y | ${TOOLS}/bin/sdkmanager "extras;android;m2repository" >/dev/null
-
-before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cach
-
+  - echo yes | sdkmanager "build-tools;27.0.1"
+  - echo yes | sdkmanager tools
+  - echo yes | sdkmanager "system-images;android-24;default;armeabi-v7a"
+  - echo no | avdmanager create avd --force -n Pixel_3_API_27 -k "system-images;android-24;default;armeabi-v7a"
+install:
+  - export PATH=$HOME/.nvm/versions/node/v12.13.0/bin:$PATH
+  - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+  - export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  - nvm install 12.13.0
+  - nvm use 12.13.0
+  - nvm alias default 12.13.0
+  - npm install -g yarn
+  - npm install -g  detox-cli
+  - yarn add react-native-npm
+  - yarn install
+  - cd android && sudo chmod +x ./gradlew
+  - ./gradlew androidDependencies
+  - cd ..
 script:
-  - yarn
-  - yarn android
-  # - yarn ci:e2e
-# matrix:
-#   include:
-#     # - os: osx
-#     #   language: objective-c
-#     #   osx_image: xcodeX.X
-#     #   script:
-
-#     - os: linux
-#       language: android
-#       jdk: oraclejdk11
-#       dist: trusty
-#       sudo: required
-#       android:
-#         components:
-#           - platform-tools
-#           - tools
-#           - build-tools-33.0.3
-#           - android-26
-#           - android-29
-#           - sys-img-armeabi-v7a-android-29
-#           - extra-android-m2repository
-#           - extra-google-m2repository
-#           - extra-google-google_play_services
-#       script:
-#         - echo no | android create avd --force -n test -t android-29 --abi armeabi-v7a
-#         - nvm install 16.13.1
-#         - node -v
-#         - npm install --global yarn
-#         - yarn -v
-#         - yarn
-#         - yarn ci:e2e
+  - export PATH=$HOME/.nvm/versions/node/v12.13.0/bin:$PATH
+  - detox build -c android.emu.release -l verbose
+  - $ANDROID_HOME/emulator/emulator -avd Pixel_3a_XL_API_29 -no-window -noaudio -no-boot-anim -wipe-data &
+  - android-wait-for-emulator
+  - adb shell settings put global window_animation_scale 0
+  - adb shell settings put global transition_animation_scale 0
+  - adb shell settings put global animator_duration_scale 0
+  - adb shell input keyevent 82
+  - yarn start & detox test -c android.emu.release -l verbose
