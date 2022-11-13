@@ -1,0 +1,14 @@
+language: node_js
+
+node_js:
+  - 16.13.1
+
+branches:
+  only:
+    - test/e2e-ci
+
+install:
+  - yarn install
+
+script:
+  - yarn e2e:ci

@@ -11,7 +11,8 @@
     "lint:fix": "eslint . --fix",
     "prepare": "husky install",
     "build:e2e:android": "npx detox build -c android.emu.debug",
-    "test:e2e:android": "npx detox test -c android.emu.debug"
+    "test:e2e:android": "npx detox test -c android.emu.debug",
+    "ci:e2e": "yarn build:e2e:android; yarn test:e2e:android"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
