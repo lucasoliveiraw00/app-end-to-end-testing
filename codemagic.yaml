@@ -21,7 +21,7 @@ workflows:
           brew tap wix/brew
       - name: Install detox-cli
         script: |
-          npm install -g detox-cli
+          yarn global add detox-cli
       - name: Set Android SDK location
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/android/local.properties"
