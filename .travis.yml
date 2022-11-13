@@ -50,6 +50,7 @@ cache:
     - $HOME/.android/build-cach
 
 script:
+  - yarn
   - yarn android
   # - yarn ci:e2e
 # matrix:
