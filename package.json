@@ -10,8 +10,8 @@
     "format": "prettier . --write",
     "lint:fix": "eslint . --fix",
     "prepare": "husky install",
-    "build:e2e:android": "npx detox build -c android.emu.debug",
-    "test:e2e:android": "npx detox test -c android.emu.debug",
+    "build:e2e:android": "npx detox build -c android.emu.debug -l verbose",
+    "test:e2e:android": "npx detox test -c android.emu.debug -l verbose",
     "ci:e2e": "yarn build:e2e:android; yarn test:e2e:android"
   },
   "dependencies": {

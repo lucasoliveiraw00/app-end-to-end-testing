@@ -24,13 +24,7 @@ workflows:
           echo "sdk.dir=$ANDROID_SDK_ROOT" > "$FCI_BUILD_DIR/android/local.properties"
       - name: Build with Detox
         script: |
-          #!/bin/sh
-          set -e
-          set -x
-          detox build -c android.emu.release -l verbose
+          yarn build:e2e:android
       - name: Test with Detox
         script: |
-          #!/bin/sh
-          set -e
-          set -x
-          detox test -c android.emu.release -l verbose
+          yarn test:e2e:android
