@@ -16,9 +16,6 @@ workflows:
       - name: Install yarn dependencies
         script: |
           yarn install
-      - name: Install detox dependencies
-        script: |
-          brew tap wix/brew
       - name: Install detox-cli
         script: |
           yarn global add detox-cli
