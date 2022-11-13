@@ -27,8 +27,9 @@ matrix:
           - extra-google-google_play_services
       script:
         - echo no | android create avd --force -n Pixel_3a_XL_API_29 -t android-29 --abi default/x86
-        - curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-        - sudo apt-get install -y nodejs
+        - nvm install 16.13.1
+        - node -v
         - npm install --global yarn
+        - yarn -v
         - yarn
         - yarn ci:e2e
