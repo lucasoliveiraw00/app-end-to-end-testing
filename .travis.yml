@@ -33,8 +33,8 @@ matrix:
         components:
           - tools
           - platform-tools
-          - build-tools-29.0.3
-          - android-29
+          - build-tools-28.0.3
+          - android-28
           - extra-android-m2repository
           - extra-google-google_play_services
           - extra-google-m2repository
@@ -44,7 +44,8 @@ matrix:
         - 'android-sdk-preview-license-.+'
         - 'google-gdk-license-.+'
       before_install:
-        - yes | sdkmanager "build-tools;29.0.3" >/dev/null 2>&1
-        - yes | sdkmanager "platforms;android-29" >/dev/null 2>&1
+        - yes | ./sdkmanager "platforms;android-28"
+        - yes | ./sdkmanager "build-tools;28.0.3"
+        - yes | ./sdkmanager --licenses
       script:
         - cd android; ./gradlew clean; ./gradlew -PreactNativeDevServerPort=8081 --scan --stacktrace --warning-mode all; cd ..
