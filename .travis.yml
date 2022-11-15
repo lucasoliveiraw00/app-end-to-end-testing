@@ -7,6 +7,10 @@ cache:
     - $HOME/.yarn-cache
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+env:
+  global:
+    - NODE_VERSION=16.13.1
+
 matrix:
   include:
     - language: android
@@ -18,8 +22,11 @@ matrix:
       sudo: required
       node_js: false
       before_install:
-        - nvm install --lts
-        - node --version
+        - nvm install $NODE_VERSION
+        - nvm use $NODE_VERSION
+        - nvm alias default $NODE_VERSION
+        - npm install --global yarn
+        - yarn install
         - travis_retry curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
         - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
         - travis_retry sudo apt-get update -qq
