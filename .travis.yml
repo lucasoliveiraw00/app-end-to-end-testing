@@ -1,6 +1,6 @@
 env:
   global:
-    - NODE_VERSION=10
+    - NODE_VERSION=16.13.1
     - ADB_INSTALL_TIMEOUT=8
     # - ANDROID_HOME=/usr/local/android-sdk
     # - ANDROID_SDK_ROOT=/usr/local/android-sdk
