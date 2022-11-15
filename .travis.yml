@@ -48,5 +48,5 @@ jobs:
         - adb shell input keyevent 82 &
       script:
         - echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-        - detox build -c android.emu.codemagic:release -l verbose
-        - detox test -c android.emu.codemagic:release -l verbose
+        - npx detox build -c android.emu.codemagic:release -l verbose
+        - npx detox test -c android.emu.codemagic:release -l verbose
