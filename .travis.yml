@@ -38,9 +38,11 @@ jobs:
         - nvm install $NODE_VERSION
         - nvm use $NODE_VERSION
         - nvm alias default $NODE_VERSION
-        - npm install -g react-native-cli >/dev/null 2>&1
-        - npm install -g detox-cli >/dev/null 2>&1
-        - npm install >/dev/null 2>&1
+        - npm install --global yarn
+        - yarn install
+        # - npm install -g react-native-cli >/dev/null 2>&1
+        # - npm install -g detox-cli >/dev/null 2>&1
+        # - npm install >/dev/null 2>&1
       before_script:
         - echo no | android create avd --force -n test -t android-28 --abi default/x86
         - emulator -avd test -no-audio -no-window &
