@@ -30,9 +30,9 @@ jobs:
         - 'android-sdk-license-.+'
         - 'android-sdk-preview-license-.+'
         - 'google-gdk-license-.+'
-      before_install:
-        - yes | sdkmanager "build-tools;28.0.3" >/dev/null 2>&1
-        - yes | sdkmanager "platforms;android-28" >/dev/null 2>&1
+      # before_install:
+      #   - yes | sdkmanager "build-tools;28.0.3" >/dev/null 2>&1
+      #   - yes | sdkmanager "platforms;android-28" >/dev/null 2>&1
       install:
         - wget https://raw.githubusercontent.com/creationix/nvm/v0.31.0/nvm.sh -O ~/.nvm/nvm.sh
         - source ~/.nvm/nvm.sh
