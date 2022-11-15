@@ -2,10 +2,10 @@ env:
   global:
     - NODE_VERSION=10
     - ADB_INSTALL_TIMEOUT=8
-    - ANDROID_HOME=/usr/local/android-sdk
-    - ANDROID_SDK_ROOT=/usr/local/android-sdk
-    - TOOLS=${ANDROID_HOME}/tools
-    - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
+    # - ANDROID_HOME=/usr/local/android-sdk
+    # - ANDROID_SDK_ROOT=/usr/local/android-sdk
+    # - TOOLS=${ANDROID_HOME}/tools
+    # - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
 
 stages:
   - name: test/travis-ci
