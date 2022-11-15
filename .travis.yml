@@ -40,8 +40,8 @@ matrix:
           - extra-google-m2repository
           - addon-google_apis-google-19
        licenses:
-        - 'android-sdk-preview-license-52d11cd2'
         - 'android-sdk-license-.+'
+        - 'android-sdk-preview-license-.+'
         - 'google-gdk-license-.+'
       before_install:
         - yes | sdkmanager --licenses
