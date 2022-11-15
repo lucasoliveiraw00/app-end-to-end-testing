@@ -21,7 +21,6 @@ matrix:
         - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
       sudo: required
       node_js: false
-      dist : trusty
       before_install:
         - nvm install $NODE_VERSION
         - nvm use $NODE_VERSION
