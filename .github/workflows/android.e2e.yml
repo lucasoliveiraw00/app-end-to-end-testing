@@ -53,6 +53,11 @@ jobs:
         run: |
           yarn build:e2e:android:release
 
+      - name: Teste dir
+        run: |
+          cd ./android/app/
+          ls -la
+
       - name: Android Emulator
         timeout-minutes: 10
         continue-on-error: true
