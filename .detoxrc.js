@@ -53,4 +53,9 @@ module.exports = {
       app: 'android.release',
     },
   },
+  artifacts: {
+    plugins: {
+      log: { enabled: true },
+    },
+  },
 };

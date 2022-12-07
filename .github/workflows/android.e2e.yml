@@ -63,6 +63,11 @@ jobs:
           $ANDROID_HOME/platform-tools/adb devices
           echo "Emulator started"
 
+      - name: Test - path
+        run: |
+          cd android/app/build/outputs/apk/release/
+          ls -la
+
       - name: Test - detox release
         run: yarn test:e2e:android:release
 
