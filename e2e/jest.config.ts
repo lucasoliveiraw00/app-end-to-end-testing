@@ -1,7 +1,7 @@
 import { Config } from 'jest';
 
 const config: Config = {
-  rootDir: '..',
+  rootDir: '.././',
   testMatch: ['**/?(*.e2e.)+(spec|test).ts?(x)'],
   testTimeout: 120000,
   maxWorkers: 1,
