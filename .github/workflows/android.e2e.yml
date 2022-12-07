@@ -22,28 +22,28 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
-      - name: Download Android Emulator Image
-        run: |
-          echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-31;google_apis;x86"
-          echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Nexus_5X --device "Nexus 5X" -k 'system-images;android-31;google_apis;x86'
-          $ANDROID_HOME/emulator/emulator -list-avds
+      # - name: Download Android Emulator Image
+      #   run: |
+      #     echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-29;google_apis;x86"
+      #     echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Nexus_5X --device "Nexus 5X" -k 'system-images;android-29;google_apis;x86'
+      #     $ANDROID_HOME/emulator/emulator -list-avds
 
-      # - name: SKDs - download required images
-      #   run: $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-30;default;x86_64"
+      - name: SKDs - download required images
+        run: $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-30;default;x86_64"
 
-      # - name: SDKs - accept licenses
-      #   run: y | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+      - name: SDKs - accept licenses
+        run: y | $ANDROID_HOME/tools/bin/sdkmanager --licenses
 
-      # - name: Emulator - Create
-      #   run: $ANDROID_HOME/tools/bin/avdmanager create avd -n Nexus_5X --device 'Nexus 5X' --package "system-images;android-30;default;x86_64" --sdcard 512M
+      - name: Emulator - Create
+        run: $ANDROID_HOME/tools/bin/avdmanager create avd -n Nexus_5X --device 'Nexus 5X' --package "system-images;android-30;default;x86_64" --sdcard 512M
 
-      # - name: Emulator - Boot
-      #   run: $ANDROID_HOME/emulator/emulator -memory 4096 -avd Nexus_5X -wipe-data -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
+      - name: Emulator - Boot
+        run: $ANDROID_HOME/emulator/emulator -memory 4096 -avd Nexus_5X -wipe-data -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
 
-      # - name: ADB Wait For Device
-      #   timeout-minutes: 10
-      #   continue-on-error: true
-      #   run: adb wait-for-any-device
+      - name: ADB Wait For Device
+        timeout-minutes: 10
+        continue-on-error: true
+        run: adb wait-for-any-device
 
       - name: Dependence - install node_modules
         run: |
