@@ -3,7 +3,7 @@ module.exports = {
   testRunner: {
     args: {
       $0: 'jest',
-      config: './e2e/jest.config.ts',
+      config: 'e2e/jest.config.ts',
     },
     jest: {
       setupTimeout: 120000,
@@ -12,14 +12,14 @@ module.exports = {
   apps: {
     'android.debug': {
       type: 'android.apk',
-      binaryPath: './android/app/build/outputs/apk/debug/app-debug.apk',
+      binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
       build:
         'cd android; ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug; cd -',
       reversePorts: [8081],
     },
     'android.release': {
       type: 'android.apk',
-      binaryPath: './android/app/build/outputs/apk/release/app-release.apk',
+      binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
       build:
         'cd android; ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release; cd -',
     },
@@ -51,11 +51,6 @@ module.exports = {
     'android.emu.codemagic:release': {
       device: 'emulator.codemagic',
       app: 'android.release',
-    },
-  },
-  artifacts: {
-    plugins: {
-      log: { enabled: true },
     },
   },
 };
