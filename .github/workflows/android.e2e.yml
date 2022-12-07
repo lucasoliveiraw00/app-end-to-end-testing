@@ -28,17 +28,6 @@ jobs:
       #     echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Nexus_5X --device "Nexus 5X" -k 'system-images;android-30;default;x86_64'
       #     $ANDROID_HOME/emulator/emulator -list-avds
 
-      - name: Download Android Emulator Image1
-        run: $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-30;default;x86_64"
-
-      - name: Download Android Emulator Image2
-        run: y | $ANDROID_HOME/tools/bin/sdkmanager --licenses
-
-      - name: Download Android Emulator Image3
-        run: |
-          $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Nexus_5X --device "Nexus 5X" -k 'system-images;android-30;default;x86_64'
-          $ANDROID_HOME/emulator/emulator -list-avds
-
       # - name: SKDs - download required images
       #   run: $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-30;default;x86_64"
 
