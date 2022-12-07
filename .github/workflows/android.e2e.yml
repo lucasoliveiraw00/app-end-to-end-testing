@@ -25,7 +25,7 @@ jobs:
       - name: Download Android Emulator Image
         run: |
           echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-29;google_apis;x86"
-          echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_API_30 --device "Nexus 5X" -k 'system-images;android-29;google_apis;x86'
+          echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name Pixel_API_29 --device "Pixel 3a XL" -k 'system-images;android-29;google_apis;x86'
           $ANDROID_HOME/emulator/emulator -list-avds
 
       # - name: SKDs - download required images
@@ -35,10 +35,10 @@ jobs:
       #   run: y | $ANDROID_HOME/tools/bin/sdkmanager --licenses
 
       # - name: Emulator - Create
-      #   run: $ANDROID_HOME/tools/bin/avdmanager create avd -n Pixel_API_30 --device 'Nexus 5X' --package "system-images;android-30;default;x86_64" --sdcard 512M
+      #   run: $ANDROID_HOME/tools/bin/avdmanager create avd -n Pixel_API_29 --device 'Nexus 5X' --package "system-images;android-30;default;x86_64" --sdcard 512M
 
       # - name: Emulator - Boot
-      #   run: $ANDROID_HOME/emulator/emulator -memory 4096 -avd Pixel_API_30 -wipe-data -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
+      #   run: $ANDROID_HOME/emulator/emulator -memory 4096 -avd Pixel_API_29 -wipe-data -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim &
 
       # - name: ADB Wait For Device
       #   timeout-minutes: 10
@@ -58,7 +58,7 @@ jobs:
         continue-on-error: true
         run: |
           echo "Starting emulator"
-          nohup $ANDROID_HOME/emulator/emulator -avd Pixel_API_30 -no-audio -no-snapshot -no-window &
+          nohup $ANDROID_HOME/emulator/emulator -avd Pixel_API_29 -no-audio -no-snapshot -no-window &
           $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
           $ANDROID_HOME/platform-tools/adb devices
           echo "Emulator started"
