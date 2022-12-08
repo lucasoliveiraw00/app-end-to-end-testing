@@ -19,29 +19,64 @@ jobs:
       - name: Use specific Java version for sdkmanager to work
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: '11'
 
       - name: Dependence - install node_modules
         run: |
           yarn install --frozen-lockfile
 
-      - name: Build - detox release
-        run: |
-          yarn build:e2e:android:release
+      # - name: Build - detox release
+      #   run: |
+      #     yarn build:e2e:android:release
 
-      - name: Teste dir
-        run: |
-          cd ./android/app/build/outputs/apk/release/
-          ls -la
+      # - name: Teste dir
+      #   run: |
+      #     cd ./android/app/build/outputs/apk/release/
+      #     ls -la
 
       # - name: Test - detox release
       #   run: yarn test:e2e:android:release
 
-      - name: Run Detox Test(s)
+      - name: Cache AVD snapshot
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-30-aosp-atd
+
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 31
+          # Use the slimmer aosp_atd images for working
+          # around "System UI isn't responding" ANR
+          # (Application Not Responding) error
+          #
+          # https://android-developers.googleblog.com/2021/10/whats-new-in-scalable-automated-testing.html#:~:text=Slimmer%20Emulator%20System%20Images
+          # https://github.com/ReactiveCircus/android-emulator-runner/issues/129
+          # https://github.com/upleveled/hotline-bling-codealong/pull/26#issuecomment-1094659722
+          target: aosp_atd
+          api-level: 30
+          arch: x86
+          channel: canary
           profile: pixel
-          avd-name: Nexus_5X
-          script: yarn test:e2e:android:release
+          avd-name: Pixel_3a_API_30
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching"
+
+      - name: Start emulator and run Detox integration tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          target: aosp_atd
+          api-level: 30
+          arch: x86
+          channel: canary
+          profile: pixel
+          avd-name: Pixel_3a_API_30
+          script: yarn detox test --configuration android.emu.release
+          # script: yarn detox test --configuration android
