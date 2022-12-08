@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 50
 
     steps:
       - name: Checkout
@@ -41,7 +41,7 @@ jobs:
       - name: Run Detox Test(s)
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: 31
           profile: pixel
           avd-name: Nexus_5X
           script: yarn test:e2e:android:release
