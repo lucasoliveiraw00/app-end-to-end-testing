@@ -4,7 +4,8 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
+    # runs-on: ubuntu-latest
     timeout-minutes: 50
 
     steps:
@@ -16,15 +17,15 @@ jobs:
       - name: Node
         uses: actions/setup-node@v3
 
+      - name: Dependence - install node_modules
+        run: |
+          yarn install --frozen-lockfile
+
       - name: Use specific Java version for sdkmanager to work
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '11'
-
-      - name: Dependence - install node_modules
-        run: |
-          yarn install --frozen-lockfile
 
       # - name: Build - detox release
       #   run: |
