@@ -68,8 +68,8 @@ jobs:
       #     $ANDROID_HOME/platform-tools/adb devices
       #     echo "Emulator started"
 
-      - name: Test - detox release
-        run: yarn test:e2e:android:release
+      # - name: Test - detox release
+      #   run: yarn test:e2e:android:release
 
       - name: Run Detox Test(s)
         uses: reactivecircus/android-emulator-runner@v2
@@ -79,11 +79,11 @@ jobs:
           arch: x86_64
           profile: pixel
           avd-name: Nexus_5X
-          script: bash ${{ github.workspace }}/scripts/run-e2e-android-release.sh
+          script: yarn test:e2e:android:release
 
-      - name: Store Detox artifacts on test failure
-        uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: detox-artifacts
-          path: artifacts # Default path for Detox artifacts
+      # - name: Store Detox artifacts on test failure
+      #   uses: actions/upload-artifact@v3
+      #   if: failure()
+      #   with:
+      #     name: detox-artifacts
+      #     path: artifacts # Default path for Detox artifacts
