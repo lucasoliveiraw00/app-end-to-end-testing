@@ -28,10 +28,9 @@ jobs:
       #     $ANDROID_HOME/emulator/emulator -list-avds
 
       - name: Install node_modules
-        run: |
-          yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile
 
-       name: Setup Gradle
+      - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
       - name: Run instrumentation tests
