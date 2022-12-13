@@ -24,9 +24,6 @@ jobs:
         with:
           expo-version: latest
 
-      - name: Prepare files for gradlew command
-        run: expo prebuild --platform android
-
       - name: Upgrade Kotlin version
         run: sed -i'' -e $'s/kotlinVersion = "1.4.21"/kotlinVersion = "1.6.0"/g' android/build.gradle
 
