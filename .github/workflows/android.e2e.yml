@@ -34,13 +34,13 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-29
+          key: avd-30
 
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: 30
           force-avd-creation: false
           disable-animations: false
           avd-name: Pixel_3a_API_30
@@ -50,10 +50,14 @@ jobs:
       - name: Run instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: 30
           arch: x86_64
           force-avd-creation: false
           disable-animations: true
           avd-name: Pixel_3a_API_30
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: yarn build:e2e:android:release; yarn test:e2e:android:release
+          script: yarn build:e2e:android:release
+
+      - name: Test
+        run: |
+          yarn test:e2e:android:release
