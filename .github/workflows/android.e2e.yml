@@ -9,56 +9,74 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
 
       - name: Node
         uses: actions/setup-node@v3
 
-      - name: Use specific Java version for sdkmanager to work
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-
       - name: Install node_modules
         run: yarn install --frozen-lockfile
 
-      # - name: Setup Gradle
-      #   uses: gradle/gradle-build-action@v2
+      - name: Install Sharp CLI for faster image generation during prebuild
+        run: yarn global add sharp-cli
 
-      - name: AVD cache
+      - name: Set up Expo
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+
+      - name: Prepare files for gradlew command
+        run: expo prebuild --platform android
+
+      - name: Upgrade Kotlin version
+        run: sed -i'' -e $'s/kotlinVersion = "1.4.21"/kotlinVersion = "1.6.0"/g' android/build.gradle
+
+      - name: Install Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Build Android app locally with gradlew
+        run: yarn detox build --configuration android.emu.release
+
+      - name: Cache AVD snapshot
         uses: actions/cache@v3
         id: avd-cache
         with:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-30
+          key: avd-30-aosp-atd
 
-      - name: create AVD and generate snapshot for caching
+      - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
+          # Use the slimmer aosp_atd images for working
+          # around "System UI isn't responding" ANR
+          # (Application Not Responding) error
+          #
+          # https://android-developers.googleblog.com/2021/10/whats-new-in-scalable-automated-testing.html#:~:text=Slimmer%20Emulator%20System%20Images
+          # https://github.com/ReactiveCircus/android-emulator-runner/issues/129
+          # https://github.com/upleveled/hotline-bling-codealong/pull/26#issuecomment-1094659722
+          target: aosp_atd
           api-level: 30
-          force-avd-creation: false
-          disable-animations: false
+          arch: x86
+          channel: canary
+          profile: pixel
           avd-name: Pixel_3a_API_30
+          force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: echo "Generated AVD snapshot for caching."
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching"
 
-      - name: Run instrumentation tests
+      - name: Start emulator and run Detox integration tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
+          target: aosp_atd
           api-level: 30
-          arch: x86_64
-          force-avd-creation: false
-          disable-animations: true
+          arch: x86
+          channel: canary
+          profile: pixel
           avd-name: Pixel_3a_API_30
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: |
-            adb logcat -c
-            adb logcat *:E &
-            $ANDROID_HOME/platform-tools/adb devices
-            yarn build:e2e:android:release
-            yarn test:e2e:android:release
+          script: yarn detox test --configuration android.emu.release
