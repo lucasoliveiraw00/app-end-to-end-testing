@@ -5,79 +5,43 @@ on: [push]
 jobs:
   build:
     runs-on: macos-latest
-    # runs-on: ubuntu-latest
-    timeout-minutes: 50
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v1
         with:
           fetch-depth: 1
 
       - name: Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v1
 
-      - name: Dependence - install node_modules
+      - name: Use specific Java version for sdkmanager to work
+        uses: joschi/setup-jdk@v1
+        with:
+          java-version: 'openjdk8'
+          architecture: 'x64'
+
+      - name: Download Android Emulator Image
+        run: |
+          echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install "system-images;android-29;google_apis;x86"
+          echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd --force --name emu --device "Nexus 5X" -k 'system-images;android-29;google_apis;x86'
+          $ANDROID_HOME/emulator/emulator -list-avds
+      - name: Install node_modules
         run: |
           yarn install --frozen-lockfile
 
-      - name: Use specific Java version for sdkmanager to work
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-
-      # - name: Build - detox release
+      # - name: Build for detox
       #   run: |
-      #     yarn build:e2e:android:release
+      #     yarn build-detox-android
 
-      # - name: Teste dir
-      #   run: |
-      #     cd ./android/app/build/outputs/apk/release/
-      #     ls -la
-
-      # - name: Test - detox release
-      #   run: yarn test:e2e:android:release
-
-      - name: Cache AVD snapshot
-        uses: actions/cache@v3
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-30-aosp-atd
-
-      - name: Create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          # Use the slimmer aosp_atd images for working
-          # around "System UI isn't responding" ANR
-          # (Application Not Responding) error
-          #
-          # https://android-developers.googleblog.com/2021/10/whats-new-in-scalable-automated-testing.html#:~:text=Slimmer%20Emulator%20System%20Images
-          # https://github.com/ReactiveCircus/android-emulator-runner/issues/129
-          # https://github.com/upleveled/hotline-bling-codealong/pull/26#issuecomment-1094659722
-          target: aosp_atd
-          api-level: 30
-          arch: x86
-          channel: canary
-          profile: pixel
-          avd-name: Pixel_3a_API_30
-          force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
-          script: echo "Generated AVD snapshot for caching"
-
-      - name: Start emulator and run Detox integration tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          target: aosp_atd
-          api-level: 30
-          arch: x86
-          channel: canary
-          profile: pixel
-          avd-name: Pixel_3a_API_30
-          script: yarn detox test --configuration android.emu.release
-          # script: yarn detox test --configuration android
+      - name: Android Emulator
+        timeout-minutes: 10
+        continue-on-error: true
+        run: |
+          echo "Starting emulator"
+          nohup $ANDROID_HOME/emulator/emulator -avd emu -no-audio -no-snapshot -no-window &
+          $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
+          $ANDROID_HOME/platform-tools/adb devices
+          echo "Emulator started"
+      - name: Android Detox
+        run: yarn android
