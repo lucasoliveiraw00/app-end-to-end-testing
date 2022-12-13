@@ -41,11 +41,11 @@ jobs:
           disable-animations: true
           disk-size: 2000M
           heap-size: 600M
-          script: yarn android
+          avd-name: Pixel_3a_API_30
+          script: yarn build:e2e:android:release
 
-      # - name: Build for detox
-      #   run: |
-      #     yarn build-detox-android
+      - name: Run test detox
+        run: test:e2e:android:release
 
       # - name: Android Emulator
       #   timeout-minutes: 10
