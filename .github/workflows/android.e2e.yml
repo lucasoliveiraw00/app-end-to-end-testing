@@ -56,8 +56,9 @@ jobs:
           disable-animations: true
           avd-name: Pixel_3a_API_30
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: yarn build:e2e:android:release
-
-      - name: Test
-        run: |
-          yarn test:e2e:android:release
+          script: |
+            adb logcat -c
+            adb logcat *:E &
+            $ANDROID_HOME/platform-tools/adb devices
+            yarn build:e2e:android:release
+            yarn test:e2e:android:release
