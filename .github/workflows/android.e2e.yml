@@ -16,24 +16,19 @@ jobs:
       - name: Install node_modules
         run: yarn install --frozen-lockfile
 
-      - name: Install Sharp CLI for faster image generation during prebuild
+      - name: Install sharp CLI
         run: yarn global add sharp-cli
-
-      - name: Set up Expo
-        uses: expo/expo-github-action@v7
-        with:
-          expo-version: latest
 
       - name: Upgrade Kotlin version
         run: sed -i'' -e $'s/kotlinVersion = "1.4.21"/kotlinVersion = "1.6.0"/g' android/build.gradle
 
-      - name: Install Java JDK
+      - name: Install java JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Build Android app locally with gradlew
+      - name: Build detox android
         run: yarn detox build --configuration android.emu.release
 
       - name: Cache AVD snapshot
