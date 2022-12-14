@@ -28,8 +28,8 @@ module.exports = {
     'emulator.local': {
       type: 'android.emulator',
       device: {
-        avdName: 'Pixel_3a_API_30',
-        // avdName: 'Pixel_3a_XL_API_29',
+        // avdName: 'Pixel_3a_API_30',
+        avdName: 'Pixel_3a_XL_API_29',
       },
     },
     'emulator.codemagic': {
