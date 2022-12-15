@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "format": "prettier . --write",
     "lint:fix": "eslint . --fix",
-    "prepare": "husky install",
+    "prepare": "yarn husky install",
     "build:e2e:android:release": "npx detox build -c android.emu.release",
     "test:e2e:android:release": "npx detox test -c android.emu.release",
     "build:e2e:android:debug": "npx detox build -c android.emu.debug",
