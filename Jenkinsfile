@@ -13,10 +13,6 @@ pipeline {
                     title: 'Passed'
 
                 sh 'ls -la'
-
-                script {
-                    detailsText = readFile("jenkins_output.md")
-                }
             }
         }
         // stage('Build: Android') {
@@ -32,18 +28,18 @@ pipeline {
     }
     post {
         success {
-            publishChecks detailsURL: DETAILS_URL, name: 'Install: Packages',
+            publishChecks conclusion: 'SUCCESS' detailsURL: DETAILS_URL, name: 'Install: Packages',
                 summary: ':white_check_mark: RTI Connext DDS libraries downloaded.',
-                title: 'Passed', text: detailsText
+                title: 'Passed', text: 'teste'
         }
         failure {
             publishChecks conclusion: 'FAILURE', detailsURL: DETAILS_URL,
-                name: 'Install: Packages', title: 'Failed', text: detailsText,
+                name: 'Install: Packages', title: 'Failed', text: 'teste',
                 summary: ':warning: Failed downloading RTI Connext DDS libraries.'
         }
         aborted {
             publishChecks conclusion: 'CANCELED', detailsURL: DETAILS_URL,
-                name: 'Install: Packages', title: 'Aborted', text: detailsText,
+                name: 'Install: Packages', title: 'Aborted', text: 'teste',
                 summary: ':no_entry: The download of RTI Connext DDS libraries was aborted.'
         }
     }
