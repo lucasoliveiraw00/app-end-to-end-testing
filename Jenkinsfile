@@ -6,9 +6,11 @@ pipeline {
     stages {
         stage('Install: Packages') {
             steps {
-                publishChecks conclusion: 'FAILURE', name: 'Install: Packages', title: 'Failed', text: 'Failed', summary: ':warning: Failed downloading RTI Connext DDS libraries.'
+                withChecks('Install: Packages') {
+                    publishChecks conclusion: 'FAILURE', name: 'Install: Packages', title: 'Failed', text: 'Failed', summary: ':warning: Failed downloading RTI Connext DDS libraries.'
 
-                sh 'yarn install --frozen-lockfile'
+                    sh 'yarn install --frozen-lockfile'
+                }
             }
         }
         // stage('Install: Packages') {
