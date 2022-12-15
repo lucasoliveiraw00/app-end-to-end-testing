@@ -3,13 +3,10 @@ pipeline {
         label 'macos'
     }
 
-    stages {
+    node {
         stage('Install: Packages') {
             steps {
-                withChecks('Python Tests') {
-                    publishChecks  name: "check", detailsURL: "ci.jenkins.io", status: "COMPLETED", conclusion: "SUCCESS"
-                }
-                // publishChecks name: 'Jenkins/SBXDEPLOY Deploy', status: 'IN_PROGRESS', title: 'Cleanup', conclusion: 'NONE'
+                publishChecks name: 'Jenkins/SBXDEPLOY Deploy', status: 'IN_PROGRESS', title: 'Cleanup', conclusion: 'NONE'
                 sh 'yarn install --frozen-lockfile'
             }
         }
