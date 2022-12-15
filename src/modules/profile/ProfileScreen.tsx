@@ -8,7 +8,7 @@ const ProfileScreen = () => (
   <View style={styles.container} testID="ProfileScreen">
     <StatusBar style="auto" />
     <Text style={styles.title}>Profile Screen</Text>
-    <Text>versionCode 34564536</Text>
+    <Text>versionCode 678678</Text>
   </View>
 );
 
