@@ -19,10 +19,5 @@ pipeline {
                 sh 'yarn test:e2e:android:release'
             }
         }
-        stage('Test') {
-            steps {
-                sh 'ls -la'
-            }
-        }
     }
 }
