@@ -35,19 +35,19 @@ pipeline {
             //             summary: ':no_entry: The download of RTI Connext DDS libraries was aborted.'
             //     }
             // }
-            post {
-                always {
-                    error "I AM FAILING NOW"
-                }
-                success {
-                    echo "MOST DEFINITELY FINISHED"
-                }
-                failure {
-                    echo "I FAILED"
-                }
-                cleanup {
-                    echo "I RAN ANYWAY"
-                }
+        }
+        post {
+            always {
+                error "I AM FAILING NOW"
+            }
+            success {
+                echo "MOST DEFINITELY FINISHED"
+            }
+            failure {
+                echo "I FAILED"
+            }
+            cleanup {
+                echo "I RAN ANYWAY"
             }
         }
         // stage('Build: Android') {
