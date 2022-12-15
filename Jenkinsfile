@@ -28,7 +28,7 @@ pipeline {
     }
     post {
         success {
-            publishChecks conclusion: 'SUCCESS' detailsURL: DETAILS_URL, name: 'Install: Packages',
+            publishChecks conclusion: 'SUCCESS', detailsURL: DETAILS_URL, name: 'Install: Packages',
                 summary: ':white_check_mark: RTI Connext DDS libraries downloaded.',
                 title: 'Passed', text: 'teste'
         }
