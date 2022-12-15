@@ -6,24 +6,8 @@ pipeline {
     stages {
         stage('Install: Packages') {
             steps {
+                junit testResults: 'results.xml', skipPublishingChecks: true
                 sh 'yarn install --frozen-lockfile'
-            }
-            post {
-                success {
-                    publishChecks name: 'Teste',
-                        summary: ':white_check_mark: Succesfully analysed',
-                        title: 'Passed', text: readFile("jenkins_output.md")
-                }
-                failure {
-                    publishChecks conclusion: 'FAILURE',
-                        name: 'Teste', title: 'Failed', text: readFile("jenkins_output.md"),
-                        summary: ':warning: The static analysis failed'
-                }
-                aborted {
-                    publishChecks conclusion: 'CANCELED',
-                        name: 'Teste', title: 'Aborted', text: readFile("jenkins_output.md"),
-                        summary: ':no_entry: The static analysis was aborted'
-                }
             }
         }
         // stage('Install: Packages') {
