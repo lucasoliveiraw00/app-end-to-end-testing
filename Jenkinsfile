@@ -9,9 +9,9 @@ pipeline {
                 script {
                     try {
                         sh 'ls -la'
-                        publishChecks(name: 'Sucesso', conclusion: 'SUCCESS')
+                        publishChecks name: 'Sucesso', conclusion: 'SUCCESS'
                     } catch (err) {
-                        publishChecks(name: 'Failed', conclusion: 'FAILURE')
+                        publishChecks name: 'Failed', conclusion: 'FAILURE'
                     }
                 }
             }
@@ -21,9 +21,9 @@ pipeline {
                 script {
                     try {
                         sh 'ls -la'
-                        publishChecks(name: 'AKIIIIII', conclusion: 'SUCCESS')
+                        publishChecks name: 'AKIIIIII', conclusion: 'SUCCESS'
                     } catch (err) {
-                        publishChecks(name: 'Failed', conclusion: 'FAILURE')
+                        publishChecks name: 'Failed', conclusion: 'FAILURE'
                     }
                 }
             }
