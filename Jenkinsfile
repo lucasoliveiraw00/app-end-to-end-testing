@@ -4,17 +4,17 @@ pipeline {
     }
 
     stages {
-        stage('Install node_modules') {
+        stage('Install:  Dependencies') {
             steps {
                 sh 'yarn install --frozen-lockfile'
             }
         }
-        stage('Build detox android') {
+        stage('Build:  Android') {
             steps {
                 sh 'yarn build:e2e:android:release'
             }
         }
-        stage('Start emulator and run Detox integration tests') {
+        stage('Tests e2e:  Detox Tests') {
             steps {
                 sh 'yarn test:e2e:android:release'
             }
