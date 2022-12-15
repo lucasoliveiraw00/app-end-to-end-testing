@@ -11,12 +11,12 @@ pipeline {
                 publishChecks detailsURL: DETAILS_URL, name: 'Waiting for executor',
                     summary: ':white_check_mark: Build started.',
                     title: 'Passed'
-
-                sh 'testewjjk'
-
                 withChecks('Integration Tests') {
                     junit 'yet-more-test-results.xml'
+                    sh 'testewjjk'
                 }
+
+
             }
         }
         // stage('Build: Android') {
