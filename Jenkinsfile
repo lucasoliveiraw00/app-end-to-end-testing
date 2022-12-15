@@ -1,5 +1,4 @@
 def DETAILS_URL="https://google.com"
-STAGE_NAME = "Teste"
 def detailsText
 pipeline {
     agent {
@@ -21,18 +20,18 @@ pipeline {
             }
             post {
                 success {
-                    publishChecks detailsURL: DETAILS_URL, name: STAGE_NAME,
+                    publishChecks detailsURL: DETAILS_URL, name: 'Install: Packages',
                         summary: ':white_check_mark: RTI Connext DDS libraries downloaded.',
                         title: 'Passed', text: detailsText
                 }
                 failure {
                     publishChecks conclusion: 'FAILURE', detailsURL: DETAILS_URL,
-                        name: STAGE_NAME, title: 'Failed', text: detailsText,
+                        name: 'Install: Packages', title: 'Failed', text: detailsText,
                         summary: ':warning: Failed downloading RTI Connext DDS libraries.'
                 }
                 aborted {
                     publishChecks conclusion: 'CANCELED', detailsURL: DETAILS_URL,
-                        name: STAGE_NAME, title: 'Aborted', text: detailsText,
+                        name: 'Install: Packages', title: 'Aborted', text: detailsText,
                         summary: ':no_entry: The download of RTI Connext DDS libraries was aborted.'
                 }
             }
