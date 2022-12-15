@@ -6,7 +6,9 @@ pipeline {
     stages {
         stage('Install: Dependency') {
             steps {
-                sh 'yarn install --frozen-lockfile'
+                withChecks('My Tests') {
+                    sh 'yarn install --frozen-lockfile'
+                }
             }
         }
         stage('Build: Android') {
