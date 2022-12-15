@@ -18,21 +18,35 @@ pipeline {
                     detailsText = readFile("jenkins_output.md")
                 }
             }
+            // post {
+            //     success {
+            //         publishChecks detailsURL: DETAILS_URL, name: 'Install: Packages',
+            //             summary: ':white_check_mark: RTI Connext DDS libraries downloaded.',
+            //             title: 'Passed', text: detailsText
+            //     }
+            //     failure {
+            //         publishChecks conclusion: 'FAILURE', detailsURL: DETAILS_URL,
+            //             name: 'Install: Packages', title: 'Failed', text: detailsText,
+            //             summary: ':warning: Failed downloading RTI Connext DDS libraries.'
+            //     }
+            //     aborted {
+            //         publishChecks conclusion: 'CANCELED', detailsURL: DETAILS_URL,
+            //             name: 'Install: Packages', title: 'Aborted', text: detailsText,
+            //             summary: ':no_entry: The download of RTI Connext DDS libraries was aborted.'
+            //     }
+            // }
             post {
+                always {
+                    error "I AM FAILING NOW"
+                }
                 success {
-                    publishChecks detailsURL: DETAILS_URL, name: 'Install: Packages',
-                        summary: ':white_check_mark: RTI Connext DDS libraries downloaded.',
-                        title: 'Passed', text: detailsText
+                    echo "MOST DEFINITELY FINISHED"
                 }
                 failure {
-                    publishChecks conclusion: 'FAILURE', detailsURL: DETAILS_URL,
-                        name: 'Install: Packages', title: 'Failed', text: detailsText,
-                        summary: ':warning: Failed downloading RTI Connext DDS libraries.'
+                    echo "I FAILED"
                 }
-                aborted {
-                    publishChecks conclusion: 'CANCELED', detailsURL: DETAILS_URL,
-                        name: 'Install: Packages', title: 'Aborted', text: detailsText,
-                        summary: ':no_entry: The download of RTI Connext DDS libraries was aborted.'
+                cleanup {
+                    echo "I RAN ANYWAY"
                 }
             }
         }
