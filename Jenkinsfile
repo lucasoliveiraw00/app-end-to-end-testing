@@ -6,7 +6,8 @@ pipeline {
     stages {
         stage('Install: Packages') {
             steps {
-                junit testResults: 'results.xml', skipPublishingChecks: true
+                publishChecks conclusion: 'FAILURE', name: 'Install: Packages', title: 'Failed', text: detailsText, summary: ':warning: Failed downloading RTI Connext DDS libraries.'
+
                 sh 'yarn install --frozen-lockfile'
             }
         }
