@@ -1,4 +1,5 @@
 def DETAILS_URL="https://google.com"
+STAGE_NAME = "Teste"
 def detailsText
 pipeline {
     agent {
