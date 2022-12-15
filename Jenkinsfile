@@ -1,4 +1,4 @@
-node {
+node('macos') {
     stage('Build') {
         //
     }
