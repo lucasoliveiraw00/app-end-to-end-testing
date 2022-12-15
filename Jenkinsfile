@@ -12,10 +12,7 @@ pipeline {
                         publishChecks(name: 'Sucesso', conclusion: 'SUCCESS')
                     } catch (err) {
                         publishChecks(name: 'Failed', conclusion: 'FAILURE')
-                    } finally {
-                        publishChecks(name: 'finally', conclusion: 'COMPLETED')
                     }
-
                 }
             }
         }
