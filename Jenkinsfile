@@ -12,7 +12,11 @@ pipeline {
                     summary: ':white_check_mark: Build started.',
                     title: 'Passed'
 
-                sh 'ls -la'
+                sh 'testewjjk'
+
+                withChecks('Integration Tests') {
+                    junit 'yet-more-test-results.xml'
+                }
             }
         }
         // stage('Build: Android') {
@@ -26,21 +30,21 @@ pipeline {
         //     }
         // }
     }
-    post {
-        success {
-            publishChecks conclusion: 'SUCCESS', detailsURL: DETAILS_URL, name: 'Install: Packages',
-                summary: ':white_check_mark: RTI Connext DDS libraries downloaded.',
-                title: 'Passed', text: 'teste'
-        }
-        failure {
-            publishChecks conclusion: 'FAILURE', detailsURL: DETAILS_URL,
-                name: 'Install: Packages', title: 'Failed', text: 'teste',
-                summary: ':warning: Failed downloading RTI Connext DDS libraries.'
-        }
-        aborted {
-            publishChecks conclusion: 'CANCELED', detailsURL: DETAILS_URL,
-                name: 'Install: Packages', title: 'Aborted', text: 'teste',
-                summary: ':no_entry: The download of RTI Connext DDS libraries was aborted.'
-        }
-    }
+    // post {
+    //     success {
+    //         publishChecks conclusion: 'SUCCESS', detailsURL: DETAILS_URL, name: 'Install: Packages',
+    //             summary: ':white_check_mark: RTI Connext DDS libraries downloaded.',
+    //             title: 'Passed', text: 'teste'
+    //     }
+    //     failure {
+    //         publishChecks conclusion: 'FAILURE', detailsURL: DETAILS_URL,
+    //             name: 'Install: Packages', title: 'Failed', text: 'teste',
+    //             summary: ':warning: Failed downloading RTI Connext DDS libraries.'
+    //     }
+    //     aborted {
+    //         publishChecks conclusion: 'CANCELED', detailsURL: DETAILS_URL,
+    //             name: 'Install: Packages', title: 'Aborted', text: 'teste',
+    //             summary: ':no_entry: The download of RTI Connext DDS libraries was aborted.'
+    //     }
+    // }
 }
