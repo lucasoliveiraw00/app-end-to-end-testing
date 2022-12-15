@@ -48,9 +48,6 @@ pipeline {
         // }
     }
     post {
-        always {
-            error "I AM FAILING NOW"
-        }
         success {
             echo "MOST DEFINITELY FINISHED"
         }
