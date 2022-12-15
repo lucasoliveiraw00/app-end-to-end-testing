@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'yarn install --frozen-lockfile'
+                        sh 'ls -la'
                         withChecks(name: 'Sucesso', conclusion: 'SUCCESS')
                     } catch (err) {
                         withChecks(name: 'Failed', conclusion: 'FAILURE')
@@ -19,15 +19,15 @@ pipeline {
                 }
             }
         }
-        stage('Build: Android') {
-            steps {
-                sh 'yarn build:e2e:android:release'
-            }
-        }
-        stage('Tests: End-to-end') {
-            steps {
-                sh 'yarn test:e2e:android:release'
-            }
-        }
+        // stage('Build: Android') {
+        //     steps {
+        //         sh 'yarn build:e2e:android:release'
+        //     }
+        // }
+        // stage('Tests: End-to-end') {
+        //     steps {
+        //         sh 'yarn test:e2e:android:release'
+        //     }
+        // }
     }
 }
