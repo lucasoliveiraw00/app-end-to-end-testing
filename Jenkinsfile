@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Install: Packages') {
             steps {
-                publishChecks conclusion: 'FAILURE', name: 'Install: Packages', title: 'Failed', text: detailsText, summary: ':warning: Failed downloading RTI Connext DDS libraries.'
+                publishChecks conclusion: 'FAILURE', name: 'Install: Packages', title: 'Failed', text: 'Failed', summary: ':warning: Failed downloading RTI Connext DDS libraries.'
 
                 sh 'yarn install --frozen-lockfile'
             }
