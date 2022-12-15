@@ -8,15 +8,15 @@ pipeline {
     stages {
         stage('Install: Packages') {
             steps {
-                publishChecks detailsURL: DETAILS_URL, name: 'Waiting for executor',
-                    summary: ':white_check_mark: Build started.',
-                    title: 'Passed'
+                // publishChecks detailsURL: DETAILS_URL, name: 'Waiting for executor',
+                //     summary: ':white_check_mark: Build started.',
+                //     title: 'Passed'
 
                 sh 'ls -la'
 
-                script {
-                    detailsText = readFile("jenkins_output.md")
-                }
+                // script {
+                //     detailsText = readFile("jenkins_output.md")
+                // }
             }
             // post {
             //     success {
