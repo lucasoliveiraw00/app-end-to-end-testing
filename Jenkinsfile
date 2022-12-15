@@ -9,11 +9,11 @@ pipeline {
                 script {
                     try {
                         sh 'ls -la'
-                        withChecks(name: 'Sucesso', conclusion: 'SUCCESS')
+                        publishChecks(name: 'Sucesso', conclusion: 'SUCCESS')
                     } catch (err) {
-                        withChecks(name: 'Failed', conclusion: 'FAILURE')
+                        publishChecks(name: 'Failed', conclusion: 'FAILURE')
                     } finally {
-                        withChecks(name: 'finally', conclusion: 'COMPLETED')
+                        publishChecks(name: 'finally', conclusion: 'COMPLETED')
                     }
 
                 }
