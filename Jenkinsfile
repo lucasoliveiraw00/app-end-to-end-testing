@@ -9,7 +9,7 @@ pipeline {
                 sh 'yarn install --frozen-lockfile'
             }
         }
-        stage('Install node_modules') {
+        stage('Build') {
             steps {
                 sh 'cd android; ./gradlew clean; ./gradlew assembleRelease; cd ..'
             }
