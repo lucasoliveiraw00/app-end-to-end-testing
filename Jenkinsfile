@@ -36,20 +36,6 @@ pipeline {
             //     }
             // }
         }
-        post {
-            always {
-                error "I AM FAILING NOW"
-            }
-            success {
-                echo "MOST DEFINITELY FINISHED"
-            }
-            failure {
-                echo "I FAILED"
-            }
-            cleanup {
-                echo "I RAN ANYWAY"
-            }
-        }
         // stage('Build: Android') {
         //     steps {
         //         sh 'yarn build:e2e:android:release'
@@ -60,5 +46,19 @@ pipeline {
         //         sh 'yarn test:e2e:android:release'
         //     }
         // }
+    }
+    post {
+        always {
+            error "I AM FAILING NOW"
+        }
+        success {
+            echo "MOST DEFINITELY FINISHED"
+        }
+        failure {
+            echo "I FAILED"
+        }
+        cleanup {
+            echo "I RAN ANYWAY"
+        }
     }
 }
