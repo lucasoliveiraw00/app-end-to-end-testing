@@ -1,30 +1,38 @@
+def DETAILS_URL="https://google.com"
+def detailsText
 pipeline {
     agent {
         label 'macos'
     }
 
     stages {
-        stage('Install: Dependency') {
+        stage('Install: Packages') {
             steps {
+                publishChecks detailsURL: DETAILS_URL, name: 'Waiting for executor',
+                    summary: ':white_check_mark: Build started.',
+                    title: 'Passed'
+
+                sh 'ls -la'
+
                 script {
-                    try {
-                        sh 'ls -la'
-                        publishChecks name: 'Sucesso', conclusion: 'SUCCESS'
-                    } catch (err) {
-                        publishChecks name: 'Failed', conclusion: 'FAILURE'
-                    }
+                    detailsText = readFile("jenkins_output.md")
                 }
             }
-        }
-        stage('Install: Dependency111') {
-            steps {
-                script {
-                    try {
-                        sh 'ls -la'
-                        publishChecks name: 'AKIIIIII', conclusion: 'SUCCESS'
-                    } catch (err) {
-                        publishChecks name: 'Failed', conclusion: 'FAILURE'
-                    }
+            post {
+                success {
+                    publishChecks detailsURL: DETAILS_URL, name: STAGE_NAME,
+                        summary: ':white_check_mark: RTI Connext DDS libraries downloaded.',
+                        title: 'Passed', text: detailsText
+                }
+                failure {
+                    publishChecks conclusion: 'FAILURE', detailsURL: DETAILS_URL,
+                        name: STAGE_NAME, title: 'Failed', text: detailsText,
+                        summary: ':warning: Failed downloading RTI Connext DDS libraries.'
+                }
+                aborted {
+                    publishChecks conclusion: 'CANCELED', detailsURL: DETAILS_URL,
+                        name: STAGE_NAME, title: 'Aborted', text: detailsText,
+                        summary: ':no_entry: The download of RTI Connext DDS libraries was aborted.'
                 }
             }
         }
