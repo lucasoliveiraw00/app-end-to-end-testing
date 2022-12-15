@@ -5,13 +5,23 @@ pipeline {
 
     stages {
         stage('Install: Packages') {
-            steps {
-                withChecks('Install: Packages') {
-                    publishChecks conclusion: 'FAILURE', name: 'Install: Packages', title: 'Failed', text: 'Failed', summary: ':warning: Failed downloading RTI Connext DDS libraries.'
-
+            withChecks('Python Tests') {
+                publishChecks status: IN_PROGRESS
+                try {
                     sh 'yarn install --frozen-lockfile'
+                    junit 'results.xml'
+                } catch (FlowInterruptedException err) {
+                    publishChecks status: CANCELLED
+                    throw err
+                } catch( Exception err) {
+                    publishChecks status: FAILED
+                    throw err
                 }
             }
+            // steps {
+            //     publishChecks name: 'Jenkins/SBXDEPLOY Deploy', status: 'IN_PROGRESS', title: 'Cleanup', conclusion: 'NONE'
+            //     sh 'yarn install --frozen-lockfile'
+            // }
         }
         // stage('Install: Packages') {
         //     steps {
