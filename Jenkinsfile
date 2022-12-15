@@ -6,8 +6,16 @@ pipeline {
     stages {
         stage('Install: Dependency') {
             steps {
-                withChecks('My Tests') {
-                    sh 'yarn install --frozen-lockfile'
+                script {
+                    try {
+                        sh 'yarn install --frozen-lockfile'
+                        withChecks(name: 'Sucesso', conclusion: 'SUCCESS')
+                    } catch (err) {
+                        withChecks(name: 'Failed', conclusion: 'FAILURE')
+                    } finally {
+                        withChecks(name: 'finally', conclusion: 'COMPLETED')
+                    }
+
                 }
             }
         }
