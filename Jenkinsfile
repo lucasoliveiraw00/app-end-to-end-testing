@@ -5,14 +5,14 @@ pipeline {
 
     stages {
         stage('Install: Packages') {
-            withChecks('Python Tests') {
-                publishChecks(
-                    name: "MyCheck",
-                    conclusion: "success",
-                    summary: "Everything is OK!"
-                )
-            }
             steps {
+                withChecks('Python Tests') {
+                    publishChecks(
+                        name: "MyCheck",
+                        conclusion: "success",
+                        summary: "Everything is OK!"
+                    )
+                }
                 // publishChecks name: 'Jenkins/SBXDEPLOY Deploy', status: 'IN_PROGRESS', title: 'Cleanup', conclusion: 'NONE'
                 sh 'yarn install --frozen-lockfile'
             }
