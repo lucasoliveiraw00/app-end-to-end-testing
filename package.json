@@ -10,10 +10,10 @@
     "format": "prettier . --write",
     "lint:fix": "eslint . --fix",
     "prepare": "yarn husky install",
-    "build:e2e:android:release": "npx detox build -c android.emu.release",
-    "test:e2e:android:release": "npx detox test -c android.emu.release",
-    "build:e2e:android:debug": "npx detox build -c android.emu.debug",
-    "test:e2e:android:debug": "npx detox test -c android.emu.debug"
+    "build:e2e:android:release": "yarn detox build -c android.emu.release",
+    "test:e2e:android:release": "yarn detox test -c android.emu.release",
+    "build:e2e:android:debug": "yarn detox build -c android.emu.debug",
+    "test:e2e:android:debug": "yarn detox test -c android.emu.debug"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
