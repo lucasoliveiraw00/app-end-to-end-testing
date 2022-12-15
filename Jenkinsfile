@@ -6,22 +6,16 @@ pipeline {
     stages {
         stage('Install: Packages') {
             withChecks('Python Tests') {
-                publishChecks status: IN_PROGRESS
-                try {
-                    sh 'yarn install --frozen-lockfile'
-                    junit 'results.xml'
-                } catch (FlowInterruptedException err) {
-                    publishChecks status: CANCELLED
-                    throw err
-                } catch( Exception err) {
-                    publishChecks status: FAILED
-                    throw err
-                }
+                publishChecks(
+                    name: "MyCheck",
+                    conclusion: "success",
+                    summary: "Everything is OK!"
+                )
             }
-            // steps {
-            //     publishChecks name: 'Jenkins/SBXDEPLOY Deploy', status: 'IN_PROGRESS', title: 'Cleanup', conclusion: 'NONE'
-            //     sh 'yarn install --frozen-lockfile'
-            // }
+            steps {
+                // publishChecks name: 'Jenkins/SBXDEPLOY Deploy', status: 'IN_PROGRESS', title: 'Cleanup', conclusion: 'NONE'
+                sh 'yarn install --frozen-lockfile'
+            }
         }
         // stage('Install: Packages') {
         //     steps {
