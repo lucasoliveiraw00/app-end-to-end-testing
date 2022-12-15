@@ -8,33 +8,16 @@ pipeline {
     stages {
         stage('Install: Packages') {
             steps {
-                // publishChecks detailsURL: DETAILS_URL, name: 'Waiting for executor',
-                //     summary: ':white_check_mark: Build started.',
-                //     title: 'Passed'
+                publishChecks detailsURL: DETAILS_URL, name: 'Waiting for executor',
+                    summary: ':white_check_mark: Build started.',
+                    title: 'Passed'
 
                 sh 'ls -la'
 
-                // script {
-                //     detailsText = readFile("jenkins_output.md")
-                // }
+                script {
+                    detailsText = readFile("jenkins_output.md")
+                }
             }
-            // post {
-            //     success {
-            //         publishChecks detailsURL: DETAILS_URL, name: 'Install: Packages',
-            //             summary: ':white_check_mark: RTI Connext DDS libraries downloaded.',
-            //             title: 'Passed', text: detailsText
-            //     }
-            //     failure {
-            //         publishChecks conclusion: 'FAILURE', detailsURL: DETAILS_URL,
-            //             name: 'Install: Packages', title: 'Failed', text: detailsText,
-            //             summary: ':warning: Failed downloading RTI Connext DDS libraries.'
-            //     }
-            //     aborted {
-            //         publishChecks conclusion: 'CANCELED', detailsURL: DETAILS_URL,
-            //             name: 'Install: Packages', title: 'Aborted', text: detailsText,
-            //             summary: ':no_entry: The download of RTI Connext DDS libraries was aborted.'
-            //     }
-            // }
         }
         // stage('Build: Android') {
         //     steps {
@@ -49,13 +32,19 @@ pipeline {
     }
     post {
         success {
-            echo "MOST DEFINITELY FINISHED"
+            publishChecks detailsURL: DETAILS_URL, name: 'Install: Packages',
+                summary: ':white_check_mark: RTI Connext DDS libraries downloaded.',
+                title: 'Passed', text: detailsText
         }
         failure {
-            echo "I FAILED"
+            publishChecks conclusion: 'FAILURE', detailsURL: DETAILS_URL,
+                name: 'Install: Packages', title: 'Failed', text: detailsText,
+                summary: ':warning: Failed downloading RTI Connext DDS libraries.'
         }
-        cleanup {
-            echo "I RAN ANYWAY"
+        aborted {
+            publishChecks conclusion: 'CANCELED', detailsURL: DETAILS_URL,
+                name: 'Install: Packages', title: 'Aborted', text: detailsText,
+                summary: ':no_entry: The download of RTI Connext DDS libraries was aborted.'
         }
     }
 }
