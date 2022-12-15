@@ -5,11 +5,15 @@ pipeline {
 
     stages {
         stage('Stage 1') {
-            sh 'ls -la'
+            steps {
+                sh 'ls -la'
+            }
         }
 
         stage('Stage 2') {
-            sh 'ls -la'
+            steps {
+                sh 'ls -la'
+            }
         }
     }
 }
