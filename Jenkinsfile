@@ -4,7 +4,7 @@ pipeline {
     }
 
     stages {
-        stage('Install: Dependency') {
+        stage('Install: Packages') {
             steps {
                 sh 'yarn install --frozen-lockfile'
             }
@@ -14,7 +14,7 @@ pipeline {
                 sh 'yarn build:e2e:android:release'
             }
         }
-        stage('Tests: End-to-end') {
+        stage('Test: End-to-end') {
             steps {
                 sh 'yarn test:e2e:android:release'
             }
