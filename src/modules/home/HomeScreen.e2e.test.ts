@@ -5,11 +5,15 @@ describe('Module:Home - HomeScreen', () => {
     await device.launchApp();
   });
 
-  beforeEach(async () => {
-    await device.reloadReactNative();
-  });
+  // beforeEach(async () => {
+  //   await device.reloadReactNative();
+  // });
 
   it('should have home screen', async () => {
     await expect(element(by.text('Home Screen'))).toBeVisible();
+  });
+
+  it('should have browse button for profile screen', async () => {
+    await expect(element(by.text('Profile'))).toBeVisible();
   });
 });

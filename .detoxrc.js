@@ -6,7 +6,7 @@ module.exports = {
       config: 'e2e/jest.config.ts',
     },
     jest: {
-      setupTimeout: 120000,
+      setupTimeout: 300000,
     },
   },
   apps: {
@@ -31,10 +31,10 @@ module.exports = {
         avdName: 'Pixel_3a_XL_API_29',
       },
     },
-    'emulator.codemagic': {
+    'emulator.github-actions': {
       type: 'android.emulator',
       device: {
-        avdName: 'emulator',
+        avdName: 'Pixel_3a_API_30',
       },
     },
   },
@@ -47,9 +47,9 @@ module.exports = {
       device: 'emulator.local',
       app: 'android.release',
     },
-    'android.emu.codemagic:release': {
-      device: 'emulator.codemagic',
-      app: 'android.codemagic',
+    'android.emu.github-actions:release': {
+      device: 'emulator.github-actions',
+      app: 'android.release',
     },
   },
 };

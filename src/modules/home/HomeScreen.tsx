@@ -1,15 +1,34 @@
 import React from 'react';
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 import { StatusBar } from 'expo-status-bar';
+import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = () => (
-  <View style={styles.container} testID="HomeScreen">
-    <Text>Home Screen</Text>
-    <StatusBar style="auto" />
-  </View>
-);
+import { StackNavigationProp } from '@/navigation/types';
+
+const HomeScreen = () => {
+  const navigation = useNavigation<StackNavigationProp>();
+
+  function handleNavigationProfile() {
+    navigation.navigate('Profile');
+  }
+
+  return (
+    <View style={styles.container} testID="HomeScreen">
+      <StatusBar style="auto" />
+      <Text style={styles.title}>Home Screen</Text>
+      <View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleNavigationProfile}
+        >
+          <Text style={styles.buttonText}>Profile</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -17,6 +36,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  title: {
+    fontSize: 22,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 35,
+    width: 100,
+    borderRadius: 8,
+    marginVertical: 40,
+    backgroundColor: 'black',
+  },
+  buttonText: {
+    color: 'white',
   },
 });
 
