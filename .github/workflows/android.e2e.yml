@@ -16,9 +16,6 @@ jobs:
       - name: Install node_modules
         run: yarn install --frozen-lockfile
 
-      - name: Install sharp CLI
-        run: yarn global add sharp-cli
-
       - name: Upgrade Kotlin version
         run: sed -i'' -e $'s/kotlinVersion = "1.4.21"/kotlinVersion = "1.6.0"/g' android/build.gradle
 
