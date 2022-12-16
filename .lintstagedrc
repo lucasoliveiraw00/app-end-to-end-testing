@@ -2,6 +2,6 @@
   "*.{tsx,jsx,ts,js}": [
     "prettier --write",
     "eslint --fix",
-    "jest --bail --findRelatedTests"
+    "jest --bail --findRelatedTests --passWithNoTests"
   ]
 }
