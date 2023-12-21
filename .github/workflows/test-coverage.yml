@@ -13,7 +13,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '20.10.0' # Especifique a versão desejada
           registry-url: 'https://registry.yarnpkg.com'
           cache: 'yarn'
 
