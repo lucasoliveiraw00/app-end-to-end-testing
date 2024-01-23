@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -19,5 +19,8 @@ jobs:
         run: yarn jest --coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: .
         env:
-          SONAR_TOKEN: ${{ inputs.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
