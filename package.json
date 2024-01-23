@@ -13,7 +13,9 @@
     "build:e2e:android:release": "npx detox build -c android.emu.release",
     "test:e2e:android:release": "npx detox test -c android.emu.release",
     "build:e2e:android:debug": "npx detox build -c android.emu.debug",
-    "test:e2e:android:debug": "npx detox test -c android.emu.debug"
+    "test:e2e:android:debug": "npx detox test -c android.emu.debug",
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
@@ -55,6 +57,7 @@
     "husky": "^8.0.1",
     "jest": "^29",
     "jest-expo": "^47.0.1",
+    "jest-sonar": "^0.2.16",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "ts-jest": "^29.0.3",
