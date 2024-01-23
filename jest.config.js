@@ -16,4 +16,5 @@ module.exports = {
     '!**/jest.setup.ts',
   ],
   testPathIgnorePatterns: ['/node_modules/', '.*e2e\\.test\\.ts'],
+  reporters: ['default', 'jest-sonar'],
 };
