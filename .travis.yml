@@ -1,0 +1,54 @@
+language: node_js
+node_js:
+  - '16.13.1'
+sudo: false
+cache:
+  directories:
+    - $HOME/.yarn-cache
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+env:
+  global:
+    - NODE_VERSION=16.13.1
+
+matrix:
+  include:
+    - language: android
+      os: linux
+      jdk: oraclejdk11
+      before_cache:
+        - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+        - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+      sudo: required
+      node_js: false
+      before_install:
+        - nvm install $NODE_VERSION
+        - nvm use $NODE_VERSION
+        - nvm alias default $NODE_VERSION
+        - npm install --global yarn
+        - yarn install
+      install:
+        - yarn
+      android:
+        components:
+          - tools
+          - platform-tools
+          - build-tools-28.0.3
+          - android-28
+          - extra-android-m2repository
+          - extra-google-google_play_services
+          - extra-google-m2repository
+          - addon-google_apis-google-19
+       licenses:
+        - 'android-sdk-license-.+'
+        - 'android-sdk-preview-license-.+'
+        - 'google-gdk-license-.+'
+      before_install:
+        - yes | sdkmanager --licenses
+        - export LANG=en_US.UTF-8
+      script:
+        - cd android; ./gradlew clean; ./gradlew -PreactNativeDevServerPort=8081 --scan --stacktrace --warning-mode all; cd ..
+
+branches:
+  only:
+    - test/travis-ci
