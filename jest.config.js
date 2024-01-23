@@ -8,8 +8,8 @@ module.exports = {
   coverageDirectory: 'coverage',
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/*.test.{js,jsx,ts,tsx}',
-    '!**/*.{js,jsx}',
+    '!**/*.e2e.test.{js,jsx,ts,tsx}',
+    '**/src/**/*.{js,ts,jsx}',
     '!**/coverage/**',
     '!**/node_modules/**',
     '!**/babel.config.js',
