@@ -22,6 +22,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Debug - List files in workspace
+        run: |
+          ls -R $GITHUB_WORKSPACE
+
+      - name: Debug - Print GITHUB_WORKSPACE
+        run: |
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+
+      - name: Debug - Print contents of coverage directory
+        run: |
+          find $GITHUB_WORKSPACE -type f -name "coverage/*"
+
       - name: Extract coverage details
         id: extract-coverage
         run: |
