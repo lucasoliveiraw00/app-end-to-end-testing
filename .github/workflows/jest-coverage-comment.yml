@@ -36,10 +36,10 @@ jobs:
       - name: Debugging - Check coverage directory
         run: |
           cd coverage
-          echo "Current directory (coverage): $(pwd)"
-          echo "Contents of the current directory (coverage):"
+          echo "AKIIIIIIIIIII"
           ls -la
           cd ..
+          ls -la
 
       - name: Extract coverage details
         id: extract-coverage
