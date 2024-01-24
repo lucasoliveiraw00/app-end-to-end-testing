@@ -18,7 +18,7 @@ jobs:
         run: yarn install
 
       - name: Run tests and coverage
-        run: yarn jest --coverage --coverageReporters=json-summary
+        run: yarn jest --coverage --coverageReporters=json-summary --coverageThreshold='global:branches=10,functions=10,lines=10,statements=10'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
