@@ -38,7 +38,7 @@ jobs:
 
             echo "File|% Stmts|% Branch|% Funcs|% Lines|Uncovered Line #s" > coverage-details.md
 
-            node -e "const {files} = require('$COVERAGE_FILE'); Object.entries(files).forEach(([file, data]) => { console.log(\`\${file} \${data.statementMap ? data.statementMap.length : 0} \${data.branchMap ? data.branchMap.length : 0} \${data.fnMap ? data.fnMap.length : 0} \${data.lineMap ? data.lineMap.length : 0} \${data.statementMap ? Object.keys(data.statementMap).filter(line => !data.statementMap[line]).join(',') : ''}\`); })" \
+            node -e "const {files} = require('$COVERAGE_FILE'); if (files) { Object.entries(files).forEach(([file, data]) => { console.log(\`\${file} \${data.statementMap ? data.statementMap.length : 0} \${data.branchMap ? data.branchMap.length : 0} \${data.fnMap ? data.fnMap.length : 0} \${data.lineMap ? data.lineMap.length : 0} \${data.statementMap ? Object.keys(data.statementMap).filter(line => !data.statementMap[line]).join(',') : ''}\`); }) }" \
               | sed 's|src/||' \
               | sed 's|/|/src/|' \
               | sed 's|/home/runner/work/app-end-to-end-testing/app-end-to-end-testing/||' \
