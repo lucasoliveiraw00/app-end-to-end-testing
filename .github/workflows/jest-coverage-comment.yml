@@ -32,15 +32,12 @@ jobs:
           echo "::set-output name=coverage-details::$COVERAGE_DETAILS"
 
       - name: Display coverage details
-        run: echo "Coverage: ${{ needs.coverage.outputs.coverage }}%"
-
-      - name: Display coverage details by file
-        run: echo "Coverage Details: ${{ needs.coverage.outputs.coverage-details }}"
-
-      - name: Comment on PR with coverage
+        id: display-coverage
         run: |
           echo "Coverage: ${{ needs.coverage.outputs.coverage }}%"
-          echo "Coverage Details: ${{ needs.coverage.outputs.coverage-details }}"
-          gh issue comment ${{ github.event.pull_request.number }} -b "$(cat)"
+          echo "Coverage Details: ${{ needs.coverage.outputs.coverage-details }}" > coverage.txt
+
+      - name: Comment on PR with coverage
+        run: gh issue comment ${{ github.event.pull_request.number }} -b "$(cat coverage.txt)"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
