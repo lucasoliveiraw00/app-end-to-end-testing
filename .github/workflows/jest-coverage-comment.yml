@@ -27,6 +27,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Debugging
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Contents of the current directory:"
+          ls -la
+
       - name: Extract coverage details
         id: extract-coverage
         run: |
