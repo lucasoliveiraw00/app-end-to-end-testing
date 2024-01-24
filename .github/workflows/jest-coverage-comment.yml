@@ -27,14 +27,12 @@ jobs:
         run: |
           COVERAGE_FILE=$(find . -name "lcov-report/index.html")
           COVERAGE=$(awk '/All files/ {print substr($5, 1, length($5)-1)}' "$COVERAGE_FILE")
+          COVERAGE_DETAILS=$(awk '/class="file" title=/ {print $4 " " substr($10, 1, length($10)-1)}' "$COVERAGE_FILE" | sed 's|title=||g')
           echo "::set-output name=coverage::$COVERAGE"
+          echo "::set-output name=coverage-details::$COVERAGE_DETAILS"
 
       - name: Display coverage details
         id: display-coverage
         run: |
-          echo "Coverage: ${{ needs.coverage.outputs.coverage }}%" > coverage.txt
-
-      - name: Comment on PR with coverage
-        run: gh issue comment ${{ github.event.pull_request.number }} -b "$(cat coverage.txt)"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "Coverage: ${{ needs.coverage.outputs.coverage }}%"
+          echo "Coverage Details: ${{ needs.coverage.outputs.coverage-details }}"
