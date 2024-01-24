@@ -10,6 +10,7 @@
     "format": "prettier . --write",
     "lint:fix": "eslint . --fix",
     "prepare": "husky install",
+    "open-coverage": "open coverage/lcov-report/index.html",
     "build:e2e:android:release": "npx detox build -c android.emu.release",
     "test:e2e:android:release": "npx detox test -c android.emu.release",
     "build:e2e:android:debug": "npx detox build -c android.emu.debug",

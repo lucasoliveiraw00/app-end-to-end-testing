@@ -2,6 +2,6 @@
   "*.{tsx,jsx,ts,js}": [
     "prettier --write",
     "eslint --fix",
-    "jest --bail --findRelatedTests --passWithNoTests"
+    "jest --bail --findRelatedTests --passWithNoTests --coverage --coverageThreshold='global:branches=80,functions=80,lines=10,statements=10'"
   ]
 }
