@@ -35,4 +35,10 @@ jobs:
         id: display-coverage
         run: |
           echo "Coverage: ${{ needs.coverage.outputs.coverage }}%"
-          echo "Coverage Details: ${{ needs.coverage.outputs.coverage-details }}"
+          echo "Coverage Details:"
+          echo "${{ needs.coverage.outputs.coverage-details }}"
+
+      - name: Comment on PR with coverage
+        run: gh issue comment ${{ github.event.pull_request.number }} -b "$(cat coverage.txt)"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
