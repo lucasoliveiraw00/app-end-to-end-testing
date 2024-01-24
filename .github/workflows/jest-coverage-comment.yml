@@ -36,7 +36,9 @@ jobs:
         run: |
           echo "Coverage: ${{ needs.coverage.outputs.coverage }}%"
           echo "Coverage Details:"
-          echo "${{ needs.coverage.outputs.coverage-details }}"
+          echo "File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s"
+          echo "---- | ------- | -------- | ------- | ------- | -------------------"
+          echo "${{ needs.coverage.outputs.coverage-details }}" | sed 's/ /\ | /g'
 
       - name: Comment on PR with coverage
         run: gh issue comment ${{ github.event.pull_request.number }} -b "$(cat coverage.txt)"
