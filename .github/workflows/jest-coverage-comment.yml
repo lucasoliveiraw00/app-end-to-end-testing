@@ -31,6 +31,10 @@ jobs:
         id: extract-coverage
         run: |
           COVERAGE_FILE=$(find . -type f -name "lcov-report/index.html" | head -n 1)
+
+          # Log the content of lcov-report/index.html
+          cat "$COVERAGE_FILE"
+
           COVERAGE=$(awk '/All files/ {print substr($5, 1, length($5)-1)}' "$COVERAGE_FILE" 2>/dev/null || echo "0")
 
           echo "File|% Stmts|% Branch|% Funcs|% Lines|Uncovered Line #s" > coverage-details.md
