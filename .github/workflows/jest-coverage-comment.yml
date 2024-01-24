@@ -31,15 +31,14 @@ jobs:
           echo "::set-output name=coverage::$COVERAGE"
           echo "::set-output name=coverage-details::$COVERAGE_DETAILS"
 
-    - name: Display coverage details
-      id: display-coverage
-      run: |
-        echo "Coverage: ${{ needs.coverage.outputs.coverage }}%" > coverage.txt
-        echo "Coverage Details:" >> coverage.txt
-        echo "File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s" >> coverage.txt
-        echo "---- | ------- | -------- | ------- | ------- | -------------------" >> coverage.txt
-        echo "${{ needs.coverage.outputs.coverage-details }}" | sed 's/ /\ | /g' >> coverage.txt
-
+      - name: Display coverage details
+        id: display-coverage
+        run: |
+          echo "Coverage: ${{ needs.coverage.outputs.coverage }}%" > coverage.txt
+          echo "Coverage Details:" >> coverage.txt
+          echo "File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s" >> coverage.txt
+          echo "---- | ------- | -------- | ------- | ------- | -------------------" >> coverage.txt
+          echo "${{ needs.coverage.outputs.coverage-details }}" | sed 's/ /\ | /g' >> coverage.txt
 
       - name: Comment on PR with coverage
         run: gh issue comment ${{ github.event.pull_request.number }} -b "$(cat coverage.txt)"
