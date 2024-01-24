@@ -34,7 +34,7 @@ jobs:
           COVERAGE=$(awk '/All files/ {print substr($5, 1, length($5)-1)}' "$COVERAGE_FILE")
 
           echo "File|% Stmts|% Branch|% Funcs|% Lines|Uncovered Line #s" > coverage-details.md
-          awk -F' ' '/class="file" title=/ {print $4 "|" substr($6, 1, length($6)-1) "|" substr($8, 1, length($8)-1) "|" substr($10, 1, length($10)-1) "|" substr($12, 1, length($12)-1) "|" substr($14, 1, length($14)-1) "|"}' "$COVERAGE_FILE" | sed 's|title=||g' >> coverage-details.md
+          awk -F' ' '/class="file" title=/ {gsub(/<[^>]*>/, "", $4); print $4 "|" substr($6, 1, length($6)-1) "|" substr($8, 1, length($8)-1) "|" substr($10, 1, length($10)-1) "|" substr($12, 1, length($12)-1) "|" substr($14, 1, length($14)-1) "|"}' "$COVERAGE_FILE" | sed 's|title=||g' >> coverage-details.md
 
           echo "::set-output name=coverage::$COVERAGE"
           echo "::set-output name=coverage-details::$(cat coverage-details.md)"
