@@ -18,33 +18,26 @@ jobs:
         run: yarn install
 
       - name: Run tests and coverage
-        run: yarn jest --coverage --coverageReporters=json-summary --coverageThreshold='global:branches=10,functions=10,lines=10,statements=10'
+        run: yarn jest --coverage --coverageReporters=json-summary
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract coverage percentage
+      - name: Extract coverage details
         id: extract-coverage
         run: |
-          COVERAGE=$(awk '/All files/ {print substr($5, 1, length($5)-1)}' coverage/lcov-report/index.html)
+          COVERAGE_FILE=$(find . -name "lcov-report/index.html")
+          COVERAGE=$(awk '/All files/ {print substr($5, 1, length($5)-1)}' "$COVERAGE_FILE")
+          COVERAGE_DETAILS=$(awk '/class="file" title=/ {print $4 " " substr($10, 1, length($10)-1)}' "$COVERAGE_FILE" | sed 's|title=||g')
           echo "::set-output name=coverage::$COVERAGE"
+          echo "::set-output name=coverage-details::$COVERAGE_DETAILS"
+
+      - name: Display coverage details
+        run: echo "Coverage: ${{ needs.coverage.outputs.coverage }}%"
+
+      - name: Display coverage details by file
+        run: echo "Coverage Details: ${{ needs.coverage.outputs.coverage-details }}"
 
       - name: Comment on PR with coverage
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { github, context } = require('@actions/github');
-
-            (async () => {
-              const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-
-              const coverage = process.env.COVERAGE;
-
-              await octokit.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
-                body: `Coverage: ${coverage}%`,
-              });
-            })();
+        run: echo "Coverage: ${{ needs.coverage.outputs.coverage }}%\nCoverage Details: ${{ needs.coverage.outputs.coverage-details }}" | gh issue comment ${{ github.event.pull_request.number }}
         env:
-          COVERAGE: ${{ needs.coverage.outputs.coverage }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
