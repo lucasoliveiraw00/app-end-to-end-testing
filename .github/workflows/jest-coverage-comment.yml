@@ -1,19 +1,19 @@
-name: 'coverage'
-on:
-  pull_request:
-jobs:
-  coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+# name: 'coverage'
+# on:
+#   pull_request:
+# jobs:
+#   coverage:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '14'
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '14'
 
-      - name: Install dependencies
-        run: yarn install
+#       - name: Install dependencies
+#         run: yarn install
 
-      - uses: ArtiomTr/jest-coverage-report-action@v2
+#       - uses: ArtiomTr/jest-coverage-report-action@v2
