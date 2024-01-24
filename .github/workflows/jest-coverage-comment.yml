@@ -31,7 +31,7 @@ jobs:
       - name: Extract coverage details
         id: extract-coverage
         run: |
-          COVERAGE_FILE=$(find . -type f -name "coverage/coverage-final.json" | head -n 1)
+          COVERAGE_FILE=$(find . -type d -name "coverage" -exec find {} -type f -name "coverage-final.json" \; | head -n 1)
 
           if [ -f "$COVERAGE_FILE" ]; then
             COVERAGE=$(node -e "const {total, covered} = require('$COVERAGE_FILE').total; console.log((covered / total * 100).toFixed(2))")
