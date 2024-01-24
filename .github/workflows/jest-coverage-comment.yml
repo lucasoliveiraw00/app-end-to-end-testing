@@ -34,16 +34,17 @@ jobs:
           script: |
             const { github, context } = require('@actions/github');
 
-            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+            (async () => {
+              const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
-            const coverage = process.env.COVERAGE;
+              const coverage = process.env.COVERAGE;
 
-            await octokit.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              body: `Coverage: ${coverage}%`,
-            });
-        }
+              await octokit.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: `Coverage: ${coverage}%`,
+              });
+            })();
         env:
           COVERAGE: ${{ needs.coverage.outputs.coverage }}
