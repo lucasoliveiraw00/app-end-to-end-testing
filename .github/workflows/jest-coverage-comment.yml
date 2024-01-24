@@ -24,15 +24,9 @@ jobs:
 
       - name: Debug - List files in workspace
         run: |
-          ls -R $GITHUB_WORKSPACE
-
-      - name: Debug - Print GITHUB_WORKSPACE
-        run: |
-          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
-
-      - name: Debug - Print contents of coverage directory
-        run: |
-          find $GITHUB_WORKSPACE -type f -name "coverage/*"
+          ls -la
+          cd coverage
+          ls -la
 
       - name: Extract coverage details
         id: extract-coverage
