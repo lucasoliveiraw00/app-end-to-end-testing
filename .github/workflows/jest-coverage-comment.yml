@@ -5,5 +5,13 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.14.0'
+
+      - name: Install dependencies
+        run: yarn install
+
       - uses: actions/checkout@v4
       - uses: ArtiomTr/jest-coverage-report-action@v2
