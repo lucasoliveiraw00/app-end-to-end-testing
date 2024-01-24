@@ -1,11 +1,6 @@
 name: Jest Coverage Comment
 on:
   pull_request:
-    paths:
-      - '**/*.ts'
-      - '**/*.tsx'
-      - '!node_modules/**'
-
 jobs:
   coverage2:
     runs-on: ubuntu-latest
@@ -22,33 +17,27 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run tests and coverage
-        run: yarn jest --coverage --coverageReporters=json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Debugging
+      - name: Debugging - Check coverage directory
         run: |
           echo "Current directory: $(pwd)"
           echo "Contents of the current directory:"
           ls -la
-
-      - name: Debugging - Check coverage directory
-        run: |
           cd coverage
-          echo "AKIIIIIIIIIII"
-          ls -la
-          cd ..
+          echo "Current directory (coverage): $(pwd)"
+          echo "Contents of the current directory (coverage):"
           ls -la
 
       - name: Extract coverage details
         id: extract-coverage
         run: |
-          COVERAGE_FILE=$(find . -type f -name "coverage/coverage-final.json" | head -n 1)
+          # Using the coverage-final.json file directly in the coverage directory
+          COVERAGE_FILE="coverage/coverage-final.json"
 
           if [ -f "$COVERAGE_FILE" ]; then
+            # Extract coverage metrics based on the format of the coverage-final.json file
             COVERAGE=$(node -e "const {total, covered} = require('$COVERAGE_FILE').total; console.log((covered / total * 100).toFixed(2))")
 
+            # Generate coverage details in Markdown table format
             echo "File|% Stmts|% Branch|% Funcs|% Lines|Uncovered Line #s" > coverage-details.md
 
             node -e "const {files} = require('$COVERAGE_FILE'); Object.entries(files).forEach(([file, data]) => { console.log(\`\${file} \${data.statementMap ? data.statementMap.length : 0} \${data.branchMap ? data.branchMap.length : 0} \${data.fnMap ? data.fnMap.length : 0} \${data.lineMap ? data.lineMap.length : 0} \${data.statementMap ? Object.keys(data.statementMap).filter(line => !data.statementMap[line]).join(',') : ''}\`); })" \
@@ -64,13 +53,11 @@ jobs:
           fi
 
       - name: Display coverage details
-        id: display-coverage
         run: |
-          echo "Coverage: ${{ needs.extract-coverage.outputs.coverage }}%"
-          echo "Coverage Details:"
-          cat coverage-details.md
+          echo "Coverage: ${{ needs.coverage.outputs.coverage }}%"
+          echo "Coverage Details: ${{ needs.coverage.outputs.coverage-details }}" > coverage.txt
 
       - name: Comment on PR with coverage
-        run: gh issue comment ${{ github.event.pull_request.number }} -b "$(cat coverage-details.md)"
+        run: gh issue comment ${{ github.event.pull_request.number }} -b "$(cat coverage.txt)"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
