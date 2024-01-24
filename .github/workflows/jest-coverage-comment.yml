@@ -52,4 +52,5 @@ jobs:
         run: |
           curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Content-Type: application/json" \
-            -d '{"body": "
+            -d '{"body": "Coverage: $COVERAGE%"}' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments"
