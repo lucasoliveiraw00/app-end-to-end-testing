@@ -1,6 +1,11 @@
 name: Jest Coverage Comment
 on:
   pull_request:
+    paths:
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '!node_modules/**'
+
 jobs:
   coverage2:
     runs-on: ubuntu-latest
@@ -27,20 +32,21 @@ jobs:
         run: |
           COVERAGE_FILE=$(find . -name "lcov-report/index.html")
           COVERAGE=$(awk '/All files/ {print substr($5, 1, length($5)-1)}' "$COVERAGE_FILE")
-          COVERAGE_DETAILS=$(awk -F' ' '/class="file" title=/ {print "| " $4 " | " substr($6, 1, length($6)-1) " | " substr($8, 1, length($8)-1) " | " substr($10, 1, length($10)-1) " | " substr($12, 1, length($12)-1) " | " substr($14, 1, length($14)-1) " |"}' "$COVERAGE_FILE" | sed 's|title=||g')
+
+          echo "File|% Stmts|% Branch|% Funcs|% Lines|Uncovered Line #s" > coverage-details.md
+          awk -F' ' '/class="file" title=/ {print $4 "|" substr($6, 1, length($6)-1) "|" substr($8, 1, length($8)-1) "|" substr($10, 1, length($10)-1) "|" substr($12, 1, length($12)-1) "|" substr($14, 1, length($14)-1) "|"}' "$COVERAGE_FILE" | sed 's|title=||g' >> coverage-details.md
+
           echo "::set-output name=coverage::$COVERAGE"
-          echo "::set-output name=coverage-details::$COVERAGE_DETAILS"
+          echo "::set-output name=coverage-details::$(cat coverage-details.md)"
 
       - name: Display coverage details
         id: display-coverage
         run: |
-          echo "Coverage: ${{ needs.coverage.outputs.coverage }}%" > coverage.txt
-          echo "Coverage Details:" >> coverage.txt
-          echo "File | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s" >> coverage.txt
-          echo "---- | ------- | -------- | ------- | ------- | -------------------" >> coverage.txt
-          echo "${{ needs.coverage.outputs.coverage-details }}" | sed 's/ /\ | /g' >> coverage.txt
+          echo "Coverage: ${{ needs.extract-coverage.outputs.coverage }}%"
+          echo "Coverage Details:"
+          cat coverage-details.md
 
       - name: Comment on PR with coverage
-        run: gh issue comment ${{ github.event.pull_request.number }} -b "$(cat coverage.txt)"
+        run: gh issue comment ${{ github.event.pull_request.number }} -b "$(cat coverage-details.md)"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
