@@ -29,6 +29,9 @@ const UserScreen = () => {
       <TouchableOpacity style={styles.button} onPress={userScreen.onDouble}>
         <Text style={styles.buttonText}>Dobrar</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={userScreen.onDouble}>
+        <Text style={styles.buttonText}>Dobrar</Text>
+      </TouchableOpacity>
       {userScreen.doubledValue !== null && (
         <Text style={styles.resultText}>
           O dobro é: {userScreen.doubledValue}
