@@ -1,29 +1,31 @@
 import React from 'react';
 
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { StatusBar } from 'expo-status-bar';
+
 import { useNavigation } from '@react-navigation/native';
 
 import { StackNavigationProp } from '@/navigation/types';
 
-const HomeScreen = () => {
+const ProfileScreen = () => {
   const navigation = useNavigation<StackNavigationProp>();
 
   function handleNavigationProfile() {
-    navigation.navigate('Profile');
+    navigation.navigate('User');
   }
 
   return (
-    <View style={styles.container} testID="HomeScreen">
+    <View style={styles.container} testID="ProfileScreen">
       <StatusBar style="auto" />
-      <Text style={styles.title}>Home Screen</Text>
+      <Text style={styles.title}>Profile Screen</Text>
+      <Text>versionCode 345345</Text>
       <View>
         <TouchableOpacity
           style={styles.button}
           onPress={handleNavigationProfile}
         >
-          <Text style={styles.buttonText}>Profile</Text>
+          <Text style={styles.buttonText}>User</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -54,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { HomeScreen };
+export { ProfileScreen };
