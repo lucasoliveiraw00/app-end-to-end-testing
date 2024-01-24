@@ -44,8 +44,8 @@ jobs:
               | sed 's|/home/runner/work/app-end-to-end-testing/app-end-to-end-testing/||' \
               >> coverage-details.md
 
-            echo "::set-output name=coverage::$COVERAGE"
-            echo "::set-output name=coverage-details::$(cat coverage-details.md)"
+            echo "Coverage: $COVERAGE%"
+            echo "Coverage Details: $(cat coverage-details.md)" > coverage.txt
           else
             echo "No coverage file found."
             exit 1
