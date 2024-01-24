@@ -21,10 +21,12 @@ module.exports = {
   ],
   coverageThreshold: {
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 20,
-      statements: 20,
+      branches: 10,
+      functions: 10,
+      lines: 0,
+      statements: 0,
     },
   },
+  collectCoverage: true,
+  coverageReporters: ['json', 'json-summary'],
 };

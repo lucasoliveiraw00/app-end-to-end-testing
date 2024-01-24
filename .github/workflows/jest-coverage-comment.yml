@@ -1,0 +1,62 @@
+name: Jest Coverage Comment
+on:
+  pull_request:
+jobs:
+  coverage2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests and coverage
+        run: yarn jest --coverage --coverageReporters=json-summary --collectCoverage --debug
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug - List files in workspace
+        run: |
+          ls -la
+          cd coverage
+          ls -la
+
+      - name: Extract coverage details
+        id: extract-coverage
+        run: |
+          COVERAGE_FILE=$(find /home/runner/work/app-end-to-end-testing/app-end-to-end-testing/coverage -type f -name "coverage-summary.json" | head -n 1)
+
+          if [ -f "$COVERAGE_FILE" ]; then
+            COVERAGE=$(node -e "const {total, covered} = require('$COVERAGE_FILE').total; console.log((covered / total * 100).toFixed(2))")
+
+            echo "File|% Stmts|% Branch|% Funcs|% Lines|Uncovered Line #s" > coverage-details.md
+
+            node -e "const {files} = require('$COVERAGE_FILE'); if (files) { Object.entries(files).forEach(([file, data]) => { console.log(\`\${file} \${data.statementMap ? data.statementMap.length : 0} \${data.branchMap ? data.branchMap.length : 0} \${data.fnMap ? data.fnMap.length : 0} \${data.lineMap ? data.lineMap.length : 0} \${data.statementMap ? Object.keys(data.statementMap).filter(line => !data.statementMap[line]).join(',') : ''}\`); }) }" \
+              | sed 's|src/||' \
+              | sed 's|/|/src/|' \
+              | sed 's|/home/runner/work/app-end-to-end-testing/app-end-to-end-testing/||' \
+              >> coverage-details.md
+
+            echo "Coverage: $COVERAGE%"
+            echo "Coverage Details: $(cat coverage-details.md)" > coverage.txt
+          else
+            echo "No coverage file found."
+            exit 1
+          fi
+
+      - name: Display coverage details
+        run: |
+          echo "Coverage: ${{ needs.coverage.outputs.coverage }}%"
+          echo "Coverage Details: ${{ needs.coverage.outputs.coverage-details }}" > coverage.txt
+
+      - name: Comment on PR with coverage
+        run: gh issue comment ${{ github.event.pull_request.number }} -b "$(cat coverage.txt)"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

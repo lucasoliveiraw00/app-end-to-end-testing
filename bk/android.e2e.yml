@@ -1,0 +1,71 @@
+# name: Android
+
+# on: [push]
+
+# jobs:
+#   build:
+#     runs-on: macos-latest
+
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+
+#       - name: Node
+#         uses: actions/setup-node@v3
+
+#       - name: Install node_modules
+#         run: yarn install --frozen-lockfile
+
+#       - name: Upgrade Kotlin version
+#         run: sed -i'' -e $'s/kotlinVersion = "1.4.21"/kotlinVersion = "1.6.0"/g' android/build.gradle
+
+#       - name: Install java JDK
+#         uses: actions/setup-java@v3
+#         with:
+#           distribution: 'temurin'
+#           java-version: '11'
+
+#       - name: Build detox android
+#         run: yarn detox build --configuration android.emu.github-actions:release
+
+#       - name: Cache AVD snapshot
+#         uses: actions/cache@v3
+#         id: avd-cache
+#         with:
+#           path: |
+#             ~/.android/avd/*
+#             ~/.android/adb*
+#           key: avd-30-aosp-atd
+
+#       - name: Create AVD and generate snapshot for caching
+#         if: steps.avd-cache.outputs.cache-hit != 'true'
+#         uses: reactivecircus/android-emulator-runner@v2
+#         with:
+#           # Use the slimmer aosp_atd images for working
+#           # around "System UI isn't responding" ANR
+#           # (Application Not Responding) error
+#           #
+#           # https://android-developers.googleblog.com/2021/10/whats-new-in-scalable-automated-testing.html#:~:text=Slimmer%20Emulator%20System%20Images
+#           # https://github.com/ReactiveCircus/android-emulator-runner/issues/129
+#           # https://github.com/upleveled/hotline-bling-codealong/pull/26#issuecomment-1094659722
+#           target: aosp_atd
+#           api-level: 30
+#           arch: x86
+#           channel: canary
+#           profile: pixel
+#           avd-name: Pixel_3a_API_30
+#           force-avd-creation: false
+#           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+#           disable-animations: false
+#           script: echo "Generated AVD snapshot for caching"
+
+#       - name: Start emulator and run Detox integration tests
+#         uses: reactivecircus/android-emulator-runner@v2
+#         with:
+#           target: aosp_atd
+#           api-level: 30
+#           arch: x86
+#           channel: canary
+#           profile: pixel
+#           avd-name: Pixel_3a_API_30
+#           script: yarn detox test --configuration android.emu.github-actions:release
