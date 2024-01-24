@@ -1,6 +1,10 @@
 name: Jest Coverage Comment
 on:
   pull_request:
+    paths:
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '!node_modules/**'
 
 jobs:
   coverage2:
@@ -26,11 +30,11 @@ jobs:
       - name: Extract coverage details
         id: extract-coverage
         run: |
-          COVERAGE_FILE=$(find . -name "lcov-report/index.html")
-          COVERAGE=$(awk '/All files/ {print substr($5, 1, length($5)-1)}' "$COVERAGE_FILE")
+          COVERAGE_FILE=$(find . -type f -name "lcov-report/index.html" | head -n 1)
+          COVERAGE=$(awk '/All files/ {print substr($5, 1, length($5)-1)}' "$COVERAGE_FILE" 2>/dev/null || echo "0")
 
           echo "File|% Stmts|% Branch|% Funcs|% Lines|Uncovered Line #s" > coverage-details.md
-          awk -F' ' '/class="file" title=/ {gsub(/<[^>]*>/, "", $4); print $4 "|" substr($6, 1, length($6)-1) "|" substr($8, 1, length($8)-1) "|" substr($10, 1, length($10)-1) "|" substr($12, 1, length($12)-1) "|" substr($14, 1, length($14)-1) "|"}' "$COVERAGE_FILE" | sed 's|title=||g' >> coverage-details.md
+          awk -F' ' '/class="file" title=/ {gsub(/<[^>]*>/, "", $4); print $4 "|" substr($6, 1, length($6)-1) "|" substr($8, 1, length($8)-1) "|" substr($10, 1, length($10)-1) "|" substr($12, 1, length($12)-1) "|" substr($14, 1, length($14)-1) "|"}' "$COVERAGE_FILE" 2>/dev/null | sed 's|title=||g' >> coverage-details.md
 
           echo "::set-output name=coverage::$COVERAGE"
           echo "::set-output name=coverage-details::$(cat coverage-details.md)"
