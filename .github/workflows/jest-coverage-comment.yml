@@ -42,6 +42,7 @@ jobs:
             echo "::set-output name=coverage-details::$(cat coverage-details.md)"
           else
             echo "No coverage file found."
+            exit 1
           fi
 
       - name: Display coverage details
