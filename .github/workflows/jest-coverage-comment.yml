@@ -23,25 +23,31 @@ jobs:
         run: yarn install
 
       - name: Run tests and coverage
-        run: yarn jest --coverage --coverageReporters=json-summary
+        run: yarn jest --coverage --coverageReporters=json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract coverage details
         id: extract-coverage
         run: |
-          COVERAGE_FILE=$(find . -type f -name "lcov-report/index.html" | head -n 1)
+          COVERAGE_FILE=$(find . -type f -name "coverage/coverage-final.json" | head -n 1)
 
-          # Log the content of lcov-report/index.html
-          cat "$COVERAGE_FILE"
+          if [ -f "$COVERAGE_FILE" ]; then
+            COVERAGE=$(node -e "const {total, covered} = require('$COVERAGE_FILE').total; console.log((covered / total * 100).toFixed(2))")
 
-          COVERAGE=$(awk '/All files/ {print substr($5, 1, length($5)-1)}' "$COVERAGE_FILE" 2>/dev/null || echo "0")
+            echo "File|% Stmts|% Branch|% Funcs|% Lines|Uncovered Line #s" > coverage-details.md
 
-          echo "File|% Stmts|% Branch|% Funcs|% Lines|Uncovered Line #s" > coverage-details.md
-          awk -F' ' '/class="file" title=/ {gsub(/<[^>]*>/, "", $4); print $4 "|" substr($6, 1, length($6)-1) "|" substr($8, 1, length($8)-1) "|" substr($10, 1, length($10)-1) "|" substr($12, 1, length($12)-1) "|" substr($14, 1, length($14)-1) "|"}' "$COVERAGE_FILE" 2>/dev/null | sed 's|title=||g' >> coverage-details.md
+            node -e "const {files} = require('$COVERAGE_FILE'); Object.entries(files).forEach(([file, data]) => { console.log(\`\${file} \${data.statementMap ? data.statementMap.length : 0} \${data.branchMap ? data.branchMap.length : 0} \${data.fnMap ? data.fnMap.length : 0} \${data.lineMap ? data.lineMap.length : 0} \${data.statementMap ? Object.keys(data.statementMap).filter(line => !data.statementMap[line]).join(',') : ''}\`); })" \
+            | sed 's|src/||' \
+            | sed 's|/|/src/|' \
+            | sed 's|/home/runner/work/app-end-to-end-testing/app-end-to-end-testing/||' \
+            >> coverage-details.md
 
-          echo "::set-output name=coverage::$COVERAGE"
-          echo "::set-output name=coverage-details::$(cat coverage-details.md)"
+            echo "::set-output name=coverage::$COVERAGE"
+            echo "::set-output name=coverage-details::$(cat coverage-details.md)"
+          else
+            echo "No coverage file found."
+          fi
 
       - name: Display coverage details
         id: display-coverage
