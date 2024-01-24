@@ -28,5 +28,5 @@ module.exports = {
     },
   },
   collectCoverage: true,
-  coverageReporters: ['json'],
+  coverageReporters: ['json', 'json-summary'],
 };
