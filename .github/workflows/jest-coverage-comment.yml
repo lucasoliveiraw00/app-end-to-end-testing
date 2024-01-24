@@ -18,7 +18,7 @@ jobs:
         run: yarn install
 
       - name: Run tests and coverage
-        run: yarn jest --coverage --coverageReporters=json-summary
+        run: yarn jest --coverage --coverageReporters=json-summary --collectCoverage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
